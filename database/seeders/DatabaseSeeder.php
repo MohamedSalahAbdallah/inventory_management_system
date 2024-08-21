@@ -2,6 +2,16 @@
 
 namespace Database\Seeders;
 
+use App\Models\Adjustment;
+use App\Models\Category;
+use App\Models\InventoryMovement;
+use App\Models\Product;
+use App\Models\ProductPurchaseOrder;
+use App\Models\ProductSalesOrder;
+use App\Models\PurchaseOrder;
+use App\Models\Role;
+use App\Models\SalesOrder;
+use App\Models\Supplier;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -13,11 +23,17 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
 
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-        ]);
+        Role::factory(3)->create();
+        User::factory(10)->create();
+        Category::factory(10)->create();
+        Supplier::factory(10)->create();
+        Product::factory(25)->create();
+        SalesOrder::factory(25)->create();
+        PurchaseOrder::factory(25)->create();
+        InventoryMovement::factory(25)->create();
+        ProductSalesOrder::factory(25)->create();
+        ProductPurchaseOrder::factory(25)->create();
+        Adjustment::factory(25)->create();
     }
 }

@@ -15,9 +15,9 @@ return new class extends Migration
             $table->id();
             $table->foreignId('product_id')->constrained('products')->onDelete('cascade');
             $table->integer('quantity');
-            $table->foreignId('related_order_id');
+            $table->unsignedBigInteger('related_order_id');
             $table->enum('movement_type', ['inbound', 'outbound', 'adjustment']);
-            
+
             $table->timestamps();
         });
     }
