@@ -12,9 +12,9 @@ Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
 
-Route::apiResource('roles', RoleController::class);
+Route::apiResource('roles', RoleController::class)->middleware('auth:sanctum');
 
-Route::apiResource("categories", CategoryController::class);
+Route::apiResource("categories", CategoryController::class)->middleware('auth:sanctum');
 Route::post("register", [AuthController::class, 'register']);
 Route::post("login", [AuthController::class, 'login']);
 Route::get("logout", [AuthController::class, 'logout'])->middleware('auth:sanctum');
