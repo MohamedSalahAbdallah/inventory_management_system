@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ProductController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SupplierController;
 use Illuminate\Http\Request;
@@ -18,3 +19,6 @@ Route::get("logout", [AuthController::class, 'logout'])->middleware('auth:sanctu
 
 
 Route::apiResource('suppliers', SupplierController::class)->middleware('auth:sanctum');
+
+Route::apiResource('products', ProductController::class)->middleware('auth:sanctum');
+
