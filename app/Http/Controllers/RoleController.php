@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Role;
 use Illuminate\Http\Request;
 
 class RoleController extends Controller
@@ -11,7 +12,7 @@ class RoleController extends Controller
      */
     public function index()
     {
-        //
+        return Role::all();
     }
 
     /**
@@ -19,7 +20,13 @@ class RoleController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate(
+            [
+                'name' => 'required|string',
+            ]
+        );
+
+        return Role::create($request->all());
     }
 
     /**
@@ -27,7 +34,7 @@ class RoleController extends Controller
      */
     public function show(string $id)
     {
-        //
+        return Role::findOrFail($id);
     }
 
     /**
@@ -35,7 +42,15 @@ class RoleController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $role = Role::findOrFail($id);
+        $request->validate(
+            [
+                'name' => 'required|string',
+            ]
+        );
+
+        $role->update($request->all());
+        return $role;
     }
 
     /**
@@ -43,6 +58,8 @@ class RoleController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $role = Role::findOrFail($id);
+        $role->delete();
+        return "Role Deleted";
     }
 }
