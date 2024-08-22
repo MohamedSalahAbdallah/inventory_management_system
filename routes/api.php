@@ -4,6 +4,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\SalesOrderController;
 use App\Http\Controllers\SupplierController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -15,6 +16,7 @@ Route::get('/user', function (Request $request) {
 Route::apiResource('roles', RoleController::class)->middleware('auth:sanctum');
 
 Route::apiResource("categories", CategoryController::class)->middleware('auth:sanctum');
+Route::apiResource("salesorders", SalesOrderController::class);
 Route::post("register", [AuthController::class, 'register']);
 Route::post("login", [AuthController::class, 'login']);
 Route::get("logout", [AuthController::class, 'logout'])->middleware('auth:sanctum');
