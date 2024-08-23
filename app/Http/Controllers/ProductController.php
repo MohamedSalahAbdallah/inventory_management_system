@@ -23,7 +23,7 @@ class ProductController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'required|string',
-            'sku' => 'required|numeric|max:255|min:1',
+            'sku' => 'required|numeric|max:255|min:1|unique:products',
             'price' => 'required|numeric|min:1',
             'quantity' => 'required|numeric|min:1',
             'category_id' => 'required|exists:categories,id',
@@ -52,8 +52,9 @@ class ProductController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'required|string',
-            'sku' => 'required|numeric|max:255|min:1',
+            'sku' => 'required|numeric|max:255|min:1|unique:products',
             'price' => 'required|numeric|min:1',
+            'quantity' => 'required|numeric|min:1',
             'category_id' => 'required|exists:categories,id',
             'supplier_id' => 'required|exists:suppliers,id',
             'image' => 'required|string|max:255',

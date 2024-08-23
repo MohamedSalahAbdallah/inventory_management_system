@@ -22,7 +22,7 @@ class RoleController extends Controller
     {
         $request->validate(
             [
-                'name' => 'required|string',
+                'name' => 'required|string|unique:roles,name',
             ]
         );
 

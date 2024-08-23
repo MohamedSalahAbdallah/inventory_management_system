@@ -21,8 +21,8 @@ class SalesOrderController extends Controller
     public function store(Request $request)
     {
         $fields = $request->validate([
-            'user_id' => 'required|integer',
-            'total_amount' => 'required|decimal:,2',
+            'user_id' => 'required|integer|exists:users,id',
+            'total_amount' => 'required|numeric|min:1',
             'status' => 'required|string|max:255'
 
         ]);
@@ -45,8 +45,8 @@ class SalesOrderController extends Controller
     {
         $salesOrder = SalesOrder::findOrFail($id);
         $fields = $request->validate([
-            'user_id' => 'required|integer',
-            'total_amount' => 'required|decimal:,2',
+            'user_id' => 'required|integer|exists:users,id',
+            'total_amount' => 'required|numeric|min:1',
             'status' => 'required|string|max:255'
         ]);
         $salesOrder->update($fields);

@@ -21,7 +21,7 @@ class CategoryController extends Controller
     public function store(Request $request)
     {
         $fields = $request->validate([
-            'name' => "required|string|unique"
+            'name' => "required|string|unique:categories,name"
         ]);
         $category = Category::create($fields);
         return $category;
@@ -42,7 +42,7 @@ class CategoryController extends Controller
     {
         $category = Category::findOrFail($id);
         $fields = $request->validate([
-            'name' => "required|string|unique"
+            'name' => "required|string|unique:categories,name"
         ]);
         $category->update($fields);
         return $category;

@@ -19,7 +19,7 @@ class InventoryMovementFactory extends Factory
     {
         return [
             'product_id' => Product::factory(),
-            'quantity' => $this->faker->numberBetween(-100, 100),
+            'quantity' => $this->faker->numberBetween(1, 100),
             'related_order_id' => $this->faker->numberBetween(1, 10),
             'movement_type' => $this->faker->randomElement(['inbound', 'outbound', 'adjustment']),
         ];
