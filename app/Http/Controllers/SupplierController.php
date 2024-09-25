@@ -22,14 +22,25 @@ class SupplierController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|string|email|unique:suppliers,email|max:255',
-            'phone' => 'required|string|unique:suppliers,phone',
+            'email' => 'required|string|email|max:255',
+            'phone' => 'required|phone',
             'address' => 'required|string|max:255',
-
+            'image' => 'nullable|image|mimes:jpeg,jpg,png,gif',
         ]);
 
-        $supplier = Supplier::create($request->all());
+        $supplier = new Supplier($request->all());
 
+
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
+            $imageName = $image->getClientOriginalName();
+            $image->storeAs('public/images', $imageName);
+            $supplier->image = $imageName;
+        }
+
+
+        $supplier->save();
+        $supplier->image = $_ENV['APP_URL'] . '/' . $supplier->image;
         return $supplier;
     }
 
@@ -55,25 +66,23 @@ class SupplierController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|string|email|unique:suppliers,email|max:255',
-            'phone' => 'required|string|unique:suppliers,phone',
+            'email' => 'required|string|email|max:255|unique:suppliers,email,' . $id,
+            'phone' => 'required|string|max:255|unique:suppliers,phone,' . $id,
             'address' => 'required|string|max:255',
         ]);
 
         $supplier = Supplier::findOrFail($id);
-
-        foreach ($request->all() as $key => $value) {
-            // if the value is different from the old value
-            // then update it
-            if ($value != $supplier->$key) {
-                $supplier->$key = $value;
-            }
-        }
+        // Only update the values that are in the validation
+        $supplier->name = $request->name;
+        $supplier->email = $request->email;
+        $supplier->phone = $request->phone;
+        $supplier->address = $request->address;
 
         // save the supplier
         $supplier->save();
 
         // return the supplier
+
         return $supplier;
     }
 
