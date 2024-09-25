@@ -49,10 +49,11 @@ class ProductController extends Controller
      */
     public function update(Request $request, string $id)
     {
+        // validate the request
         $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'required|string',
-            'sku' => 'required|numeric|max:255|min:1|unique:products',
+            'sku' => 'required|numeric|max:255|min:1',
             'price' => 'required|numeric|min:1',
             'quantity' => 'required|numeric|min:1',
             'category_id' => 'required|exists:categories,id',
@@ -60,8 +61,22 @@ class ProductController extends Controller
             'image' => 'required|string|max:255',
         ]);
 
+        // get the product
         $product = Product::findOrFail($id);
-        $product->update($request->all());
+
+        // loop through the request and only update the values
+        // if the new value is different from the old value
+        foreach ($request->all() as $key => $value) {
+            if ($value != $product->$key) {
+                // if the value is different then update it
+                $product->$key = $value;
+            }
+        }
+
+        // save the product
+        $product->save();
+
+        // return the product
         return $product;
     }
 

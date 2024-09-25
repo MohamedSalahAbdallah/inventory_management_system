@@ -45,6 +45,12 @@ class SupplierController extends Controller
     /**
      * Update the specified resource in storage.
      */
+    /**
+     * Update the specified resource in storage.
+     *
+     * if the value is the same as the old value then dont update the value
+     * if it is different then update it
+     */
     public function update(Request $request, string $id)
     {
         $request->validate([
@@ -53,8 +59,21 @@ class SupplierController extends Controller
             'phone' => 'required|string|unique:suppliers,phone',
             'address' => 'required|string|max:255',
         ]);
+
         $supplier = Supplier::findOrFail($id);
-        $supplier->update($request->all());
+
+        foreach ($request->all() as $key => $value) {
+            // if the value is different from the old value
+            // then update it
+            if ($value != $supplier->$key) {
+                $supplier->$key = $value;
+            }
+        }
+
+        // save the supplier
+        $supplier->save();
+
+        // return the supplier
         return $supplier;
     }
 
