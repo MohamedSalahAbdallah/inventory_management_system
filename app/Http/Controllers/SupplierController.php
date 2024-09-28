@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Supplier;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class SupplierController extends Controller
 {
@@ -69,6 +70,7 @@ class SupplierController extends Controller
             'email' => 'required|string|email|max:255|unique:suppliers,email,' . $id,
             'phone' => 'required|string|max:255|unique:suppliers,phone,' . $id,
             'address' => 'required|string|max:255',
+            'image' => 'nullable|image|mimes:jpeg,jpg,png,gif',
         ]);
 
         $supplier = Supplier::findOrFail($id);
@@ -78,11 +80,23 @@ class SupplierController extends Controller
         $supplier->phone = $request->phone;
         $supplier->address = $request->address;
 
+        if ($request->hasFile('image')) {
+            // remove the old image
+            if ($supplier->image != null) {
+                Storage::delete('public/images/' . $supplier->image);
+            }
+
+            $image = $request->file('image');
+            $imageName = $image->getClientOriginalName();
+            $image->storeAs('public/images', $imageName);
+            $supplier->image = $imageName;
+        }
+
         // save the supplier
         $supplier->save();
 
         // return the supplier
-
+        $supplier->image = $_ENV['APP_URL'] . '/' . $supplier->image;
         return $supplier;
     }
 

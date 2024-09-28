@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
 {
@@ -28,10 +29,28 @@ class ProductController extends Controller
             'quantity' => 'required|numeric|min:1',
             'category_id' => 'required|exists:categories,id',
             'supplier_id' => 'required|exists:suppliers,id',
-            'image' => 'required|string|max:255',
+            'image' => 'required|image|mimes:jpeg,jpg,png,gif',
         ]);
 
-        $product = Product::create($request->all());
+        // store the image
+        $image = $request->file('image');
+        $imageName = uniqid() . '_' . $image->getClientOriginalName();
+        $image->storeAs('public/images/', $imageName);
+        $imageName = 'http://127.0.0.1:8000/storage/images/' . $imageName;
+
+
+
+        // store the product
+        $product = Product::create([
+            'name' => $request->name,
+            'description' => $request->description,
+            'sku' => $request->sku,
+            'price' => $request->price,
+            'quantity' => $request->quantity,
+            'category_id' => $request->category_id,
+            'supplier_id' => $request->supplier_id,
+            'image' => $imageName,
+        ]);
         return $product;
     }
 
@@ -58,19 +77,36 @@ class ProductController extends Controller
             'quantity' => 'required|numeric|min:1',
             'category_id' => 'required|exists:categories,id',
             'supplier_id' => 'required|exists:suppliers,id',
-            'image' => 'required|string|max:255',
+            'image' => 'nullable|string|max:255',
         ]);
 
         // get the product
         $product = Product::findOrFail($id);
 
-        // loop through the request and only update the values
-        // if the new value is different from the old value
-        foreach ($request->all() as $key => $value) {
-            if ($value != $product->$key) {
-                // if the value is different then update it
-                $product->$key = $value;
+        // update the product
+        $product->name = $request->name;
+        $product->description = $request->description;
+        $product->sku = $request->sku;
+        $product->price = $request->price;
+        $product->quantity = $request->quantity;
+        $product->category_id = $request->category_id;
+        $product->supplier_id = $request->supplier_id;
+
+        // handle the image
+        if ($request->hasFile('image')) {
+            // delete the old image
+            if ($product->image != null) {
+                Storage::delete('public/images/' . $product->image);
             }
+
+            // store the new image
+            $image = $request->file('image');
+            $imageName = uniqid() . '_' . $image->getClientOriginalName();
+            $image->storeAs('public/images/', $imageName);
+            $imageName = 'http://127.0.0.1:8000/storage/images/' . $imageName;
+
+            // update the product image
+            $product->image = $imageName;
         }
 
         // save the product
@@ -79,7 +115,6 @@ class ProductController extends Controller
         // return the product
         return $product;
     }
-
     /**
      * Remove the specified resource from storage.
      */
