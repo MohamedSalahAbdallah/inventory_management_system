@@ -77,7 +77,8 @@ class ProductController extends Controller
             'quantity' => 'required|numeric|min:1',
             'category_id' => 'required|exists:categories,id',
             'supplier_id' => 'required|exists:suppliers,id',
-            'image' => 'nullable|string|max:255',
+            'image' => 'required|image|mimes:jpeg,jpg,png,gif',
+
         ]);
 
         // get the product
@@ -96,7 +97,9 @@ class ProductController extends Controller
         if ($request->hasFile('image')) {
             // delete the old image
             if ($product->image != null) {
-                Storage::delete('public/images/' . $product->image);
+                Storage::delete(
+                    'public/images/' . str_replace("http://127.0.0.1:8000/storage/images/", "", "$product->image")
+                );
             }
 
             // store the new image
