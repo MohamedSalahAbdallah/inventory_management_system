@@ -34,4 +34,4 @@ Route::apiResource('inventory-movements', InventoryMovementController::class)->m
 
 Route::apiResource('product-sales-orders', ProductSalesOrderController::class)->middleware('auth:sanctum');
 
-Route::apiResource('users', UserController::class);
+Route::apiResource('users', UserController::class)->middleware('auth:sanctum');
