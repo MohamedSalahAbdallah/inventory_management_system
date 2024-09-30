@@ -23,8 +23,8 @@ class SupplierController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255',
-            'phone' => 'required|phone',
+            'email' => 'required|string|email|max:255|unique:suppliers,email',
+            'phone' => 'required|string|max:255|unique:suppliers,phone',
             'address' => 'required|string|max:255',
             'image' => 'nullable|image|mimes:jpeg,jpg,png,gif',
         ]);
@@ -74,7 +74,6 @@ class SupplierController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:suppliers,email,' . $id,
             'phone' => 'required|string|max:255|unique:suppliers,phone,' . $id,
-            'address' => 'required|string|max:255',
             'image' => 'nullable|image|mimes:jpeg,jpg,png,gif',
         ]);
 
