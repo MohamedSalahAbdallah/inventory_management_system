@@ -8,6 +8,7 @@ use App\Http\Controllers\ProductSalesOrderController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SalesOrderController;
 use App\Http\Controllers\SupplierController;
+use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -32,3 +33,5 @@ Route::apiResource('products', ProductController::class)->middleware('auth:sanct
 Route::apiResource('inventory-movements', InventoryMovementController::class)->middleware('auth:sanctum');
 
 Route::apiResource('product-sales-orders', ProductSalesOrderController::class)->middleware('auth:sanctum');
+
+Route::apiResource('users', UserController::class);
