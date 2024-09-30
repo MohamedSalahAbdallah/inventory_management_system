@@ -52,11 +52,19 @@ class UserController extends Controller
     {
         $request->validate([
             "name" => 'required|string',
-            "email" => 'required|email|unique:users,email',
+            "email" => 'required|email|unique:users,email,' . $id,
             "password" => 'required|min:8|confirmed',
             "role_id" => 'required|exists:roles,id'
         ]);
-        
+
+        $user = User::findOrFail($id);
+        $user->update([
+            "name" => $request->name,
+            "email" => $request->email,
+            "password" => bcrypt($request->password),
+            "role_id" => $request->role_id
+        ]);
+        return $user;
     }
 
     /**
@@ -64,6 +72,8 @@ class UserController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $user = User::findOrFail($id);
+        $user->delete();
+        return "User Deleted";
     }
 }
