@@ -32,6 +32,9 @@ class InventoryMovementController extends Controller
                 new ValueExistsInTwoTables('sales_orders', 'purchase_orders', 'id')
             ],
         ]);
+
+        $inventoryMovement = InventoryMovement::create($request->all());
+        return $inventoryMovement;
     }
 
     /**
