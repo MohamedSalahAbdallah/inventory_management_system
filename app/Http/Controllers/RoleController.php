@@ -12,7 +12,7 @@ class RoleController extends Controller
      */
     public function index()
     {
-        return Role::all();
+        return Role::with('users')->all();
     }
 
     /**
@@ -34,7 +34,7 @@ class RoleController extends Controller
      */
     public function show(string $id)
     {
-        return Role::findOrFail($id);
+        return Role::with('users')->findOrFail($id);
     }
 
     /**
