@@ -12,7 +12,7 @@ class ProductSalesOrderController extends Controller
      */
     public function index()
     {
-        return ProductSalesOrder::all();
+        return ProductSalesOrder::with(['product', 'salesOrder'])->all();
     }
 
     /**
@@ -36,7 +36,7 @@ class ProductSalesOrderController extends Controller
      */
     public function show(string $id)
     {
-        return ProductSalesOrder::findOrFail($id);
+        return ProductSalesOrder::with(['product', 'salesOrder'])->findOrFail($id);
     }
 
     /**
