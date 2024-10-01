@@ -12,7 +12,7 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        return Category::all();
+        return Category::with('products')->get();
     }
 
     /**
@@ -32,7 +32,7 @@ class CategoryController extends Controller
      */
     public function show(string $id)
     {
-        return Category::findOrFail($id);
+        return Category::with('products')->findOrFail($id);
     }
 
     /**

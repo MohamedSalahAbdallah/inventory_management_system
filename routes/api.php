@@ -17,10 +17,12 @@ use Illuminate\Support\Facades\Route;
 
 Route::apiResource('roles', RoleController::class)->middleware('auth:sanctum');
 
-Route::apiResource("categories", CategoryController::class)->middleware('auth:sanctum');
 Route::post("register", [AuthController::class, 'register']);
 Route::post("login", [AuthController::class, 'login'])->name('login');
 Route::get("logout", [AuthController::class, 'logout'])->middleware('auth:sanctum');
+
+
+Route::apiResource("categories", controller: CategoryController::class)->middleware('auth:sanctum');
 
 Route::apiResource("salesorders", SalesOrderController::class)->middleware('auth:sanctum');
 
