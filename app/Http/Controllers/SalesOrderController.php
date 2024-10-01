@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Product;
 use App\Models\SalesOrder;
 use Illuminate\Http\Request;
+
 
 class SalesOrderController extends Controller
 {
@@ -12,7 +14,7 @@ class SalesOrderController extends Controller
      */
     public function index()
     {
-        return SalesOrder::all();
+        return SalesOrder::with(['user', 'productSalesOrders.product'])->get();
     }
 
     /**
@@ -35,7 +37,7 @@ class SalesOrderController extends Controller
      */
     public function show(string $id)
     {
-        return SalesOrder::findOrFail($id);
+        return SalesOrder::with(['user', 'productSalesOrders.product'])->findOrFail($id);
     }
 
     /**
