@@ -24,7 +24,7 @@ class ProductFactory extends Factory
             'sku' => $this->faker->randomNumber(6),
             'price' => $this->faker->randomFloat(2, 1, 100),
             'quantity' => $this->faker->numberBetween(0, 1000),
-            'image' => "http://127.0.0.1:8000/storage/images/" . $this->faker->image(storage_path('app/public/images/'), 640, 480, null, false),
+            'image' => $this->faker->imageUrl(),
 
             'category_id' => Category::inRandomOrder()->value('id'),
             'supplier_id' => Supplier::inRandomOrder()->value('id'),
