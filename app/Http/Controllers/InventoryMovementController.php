@@ -13,7 +13,7 @@ class InventoryMovementController extends Controller
      */
     public function index()
     {
-        return InventoryMovement::all();
+        return InventoryMovement::with('product')->get();
     }
 
     /**
@@ -39,7 +39,7 @@ class InventoryMovementController extends Controller
      */
     public function show(string $id)
     {
-        return InventoryMovement::findOrFail($id);
+        return InventoryMovement::with('product')->findOrFail($id);
     }
 
     /**
