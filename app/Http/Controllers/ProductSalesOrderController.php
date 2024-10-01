@@ -12,7 +12,7 @@ class ProductSalesOrderController extends Controller
      */
     public function index()
     {
-        return ProductSalesOrder::with(['product', 'salesOrder'])->all();
+        return ProductSalesOrder::with(['product', 'salesOrder'])->get();
     }
 
     /**

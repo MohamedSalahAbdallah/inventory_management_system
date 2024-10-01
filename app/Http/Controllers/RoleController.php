@@ -12,7 +12,7 @@ class RoleController extends Controller
      */
     public function index()
     {
-        return Role::with('users')->all();
+        return Role::with('users')->get();
     }
 
     /**
