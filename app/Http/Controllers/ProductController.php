@@ -13,7 +13,7 @@ class ProductController extends Controller
      */
     public function index()
     {
-        return Product::all();
+        return Product::with(['category', 'supplier', 'inventoryMovements', 'productSalesOrders.salesOrder', 'productPurchaseOrders.purchaseOrder', 'adjustments'])->get();
     }
 
     /**
@@ -59,7 +59,7 @@ class ProductController extends Controller
      */
     public function show(string $id)
     {
-        $product = Product::findOrFail($id);
+        $product = Product::with(['category', 'supplier', 'inventoryMovements', 'productSalesOrders.salesOrder', 'productPurchaseOrders.purchaseOrder', 'adjustments'])->findOrFail($id);
         return $product;
     }
 
