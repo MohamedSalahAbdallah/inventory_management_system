@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ProductPurchaseOrder;
 use Illuminate\Http\Request;
 
 class ProductPurchaseOrderController extends Controller
@@ -11,7 +12,7 @@ class ProductPurchaseOrderController extends Controller
      */
     public function index()
     {
-        
+        return ProductPurchaseOrder::with(['product', 'purchaseOrder'])->get();
     }
 
     /**
@@ -19,7 +20,15 @@ class ProductPurchaseOrderController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            "quantity" => 'integer|required|min:1',
+            'price' => 'required|numeric|min:0',
+            'product_id' => 'required|exists:products,id',
+            "purchase_order_id" => 'required|exists:purchase_orders,id'
+        ]);
+
+        $productPurchaseOrder = ProductPurchaseOrder::create($request->all());
+        return $productPurchaseOrder;
     }
 
     /**
@@ -27,7 +36,7 @@ class ProductPurchaseOrderController extends Controller
      */
     public function show(string $id)
     {
-        //
+        return ProductPurchaseOrder::with(['product', 'purchaseOrder'])->findOrFail($id);
     }
 
     /**
@@ -35,7 +44,16 @@ class ProductPurchaseOrderController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $request->validate([
+            "quantity" => 'integer|required|min:1',
+            'price' => 'required|numeric|min:0',
+            'product_id' => 'required|exists:products,id',
+            "purchase_order_id" => 'required|exists:purchase_orders,id'
+        ]);
+
+        $productPurchaseOrder = ProductPurchaseOrder::findOrFail($id);
+        $productPurchaseOrder->update($request->all());
+        return $productPurchaseOrder;
     }
 
     /**
@@ -44,5 +62,8 @@ class ProductPurchaseOrderController extends Controller
     public function destroy(string $id)
     {
         //
+        $productPurchaseOrder = ProductPurchaseOrder::findOrFail($id);
+        $productPurchaseOrder->delete();
+        return response()->json(['message' => 'Product Purchase Order deleted successfully']);
     }
 }
