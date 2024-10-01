@@ -4,7 +4,9 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\InventoryMovementController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\ProductPurchaseOrderController;
 use App\Http\Controllers\ProductSalesOrderController;
+use App\Http\Controllers\PurchaseOrderController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SalesOrderController;
 use App\Http\Controllers\SupplierController;
@@ -35,3 +37,7 @@ Route::apiResource('inventory-movements', InventoryMovementController::class)->m
 Route::apiResource('product-sales-orders', ProductSalesOrderController::class)->middleware('auth:sanctum');
 
 Route::apiResource('users', UserController::class)->middleware('auth:sanctum');
+
+Route::apiResource("purchase-orders", PurchaseOrderController::class)->middleware('auth:sanctum');
+
+Route::apiResource('product-purchase-orders', ProductPurchaseOrderController::class)->middleware('auth:sanctum');
