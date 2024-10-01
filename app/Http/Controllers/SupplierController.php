@@ -13,7 +13,7 @@ class SupplierController extends Controller
      */
     public function index()
     {
-        return Supplier::all();
+        return Supplier::with(['products', 'purchaseOrders'])->all();
     }
 
     /**
@@ -55,7 +55,7 @@ class SupplierController extends Controller
      */
     public function show(string $id)
     {
-        $supplier = Supplier::findOrFail($id);
+        $supplier = Supplier::with(['products', 'purchaseOrders'])->findOrFail($id);
         return $supplier;
     }
 
