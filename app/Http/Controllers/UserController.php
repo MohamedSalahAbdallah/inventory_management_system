@@ -50,20 +50,46 @@ class UserController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $request->validate([
-            "name" => 'required|string',
-            "email" => 'required|email|unique:users,email,' . $id,
-            "password" => 'required|min:8|confirmed',
-            "role_id" => 'required|exists:roles,id'
-        ]);
-
         $user = User::findOrFail($id);
-        $user->update([
-            "name" => $request->name,
-            "email" => $request->email,
-            "password" => bcrypt($request->password),
-            "role_id" => $request->role_id
-        ]);
+
+        $updatedUser = [];
+
+        if ($request->name != $user->name) {
+            $request->validate([
+                "name" => 'required|string',
+            ]);
+
+            $updatedUser['name'] = $request->name;
+        }
+
+        if ($request->email != $user->email) {
+            $request->validate([
+                "email" => 'required|email|unique:users,email,' . $id,
+            ]);
+
+            $updatedUser['email'] = $request->email;
+        }
+
+        if ($request->password) {
+            $request->validate([
+                "password" => 'required|min:8|confirmed',
+            ]);
+
+            $updatedUser['password'] = bcrypt($request->password);
+        }
+
+        if ($request->role_id != $user->role_id) {
+            $request->validate([
+                "role_id" => 'required|exists:roles,id'
+            ]);
+
+            $updatedUser['role_id'] = $request->role_id;
+        }
+
+        if (count($updatedUser) > 0) {
+            $user->update($updatedUser);
+        }
+
         return $user;
     }
 
