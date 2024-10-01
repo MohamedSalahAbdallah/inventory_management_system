@@ -12,7 +12,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        return User::with('role')->get();
+        return User::with(['role', 'salesOrders', 'purchaseOrders', 'adjustments'])->get();
     }
 
     /**
@@ -42,7 +42,7 @@ class UserController extends Controller
      */
     public function show(string $id)
     {
-        return User::with('role')->findOrFail($id);
+        return User::with(['role', 'salesOrders', 'purchaseOrders', 'adjustments'])->findOrFail($id);
     }
 
     /**
