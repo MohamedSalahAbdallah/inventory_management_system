@@ -77,7 +77,7 @@ class ProductController extends Controller
             'quantity' => 'required|numeric|min:1',
             'category_id' => 'required|exists:categories,id',
             'supplier_id' => 'required|exists:suppliers,id',
-            'image' => 'required|image|mimes:jpeg,jpg,png,gif',
+            'image' => 'nullable|image|mimes:jpeg,jpg,png,gif',
 
         ]);
 
