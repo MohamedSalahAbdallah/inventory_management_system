@@ -13,7 +13,8 @@ class ProductController extends Controller
      */
     public function index()
     {
-        return Product::with(['category', 'supplier', 'inventoryMovements', 'productSalesOrders.salesOrder', 'productPurchaseOrders.purchaseOrder', 'adjustments'])->get();
+        // return Product::with(['category', 'supplier', 'inventoryMovements', 'productSalesOrders.salesOrder', 'productPurchaseOrders.purchaseOrder', 'adjustments'])->get();
+        return Product::with(['category', 'supplier'])->get();
     }
 
     /**
