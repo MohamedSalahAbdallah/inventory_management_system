@@ -63,6 +63,6 @@ class ProductSalesOrderController extends Controller
     {
         $productSalesOrder = ProductSalesOrder::findOrFail($id);
         $productSalesOrder->delete();
-        return "Product Sales Order Deleted";
+        return response()->json(['message' => 'Product Sales Order Deleted']);
     }
 }

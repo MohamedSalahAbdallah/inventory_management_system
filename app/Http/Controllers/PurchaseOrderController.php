@@ -60,6 +60,6 @@ class PurchaseOrderController extends Controller
     {
         $purchaseOrder = PurchaseOrder::findOrFail($id);
         $purchaseOrder->delete();
-        return "Deleted Successfully";
+        return response()->json(['message' => "Deleted Successfully"]);
     }
 }

@@ -62,6 +62,6 @@ class SalesOrderController extends Controller
     {
         $salesOrder = SalesOrder::findOrFail($id);
         $salesOrder->delete();
-        return "Deleted Successfully";
+        return response()->json(['message' => 'Deleted Successfully']);
     }
 }

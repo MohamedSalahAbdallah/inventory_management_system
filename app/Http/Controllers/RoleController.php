@@ -60,6 +60,6 @@ class RoleController extends Controller
     {
         $role = Role::findOrFail($id);
         $role->delete();
-        return "Role Deleted";
+        return response()->json(['message' => 'Role Deleted']);
     }
 }

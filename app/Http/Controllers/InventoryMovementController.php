@@ -74,6 +74,6 @@ class InventoryMovementController extends Controller
     {
         $inventoryMovement = InventoryMovement::findOrFail($id);
         $inventoryMovement->delete();
-        return "Deleted Successfully";
+        return response()->json(['message' => 'Deleted Successfully']);
     }
 }
