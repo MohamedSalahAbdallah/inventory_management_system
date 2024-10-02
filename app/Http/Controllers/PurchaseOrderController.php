@@ -22,7 +22,7 @@ class PurchaseOrderController extends Controller
     {
         $request->validate([
             'user_id' => 'required|integer|exists:users,id',
-            'total' => 'required|numeric|min:1',
+            'total_amount' => 'required|numeric|min:1',
             'status' => 'required|string|max:255',
             'supplier_id' => 'required|numeric|exists:suppliers,id'
         ]);
@@ -43,7 +43,7 @@ class PurchaseOrderController extends Controller
     {
         $request->validate([
             'user_id' => 'required|integer|exists:users,id',
-            'total' => 'required|numeric|min:1',
+            'total_amount' => 'required|numeric|min:1',
             'status' => 'required|string|max:255',
             'supplier_id' => 'required|numeric|exists:suppliers,id'
         ]);
