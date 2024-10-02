@@ -13,8 +13,8 @@ class UserController extends Controller
     public function index()
     {
         return User::with(['role', 'salesOrders', 'purchaseOrders', 'adjustments'])
-        ->where('id', '!=', auth()->id())
-        ->get();
+            ->where('id', '!=', auth('sanctum')->user()->id)
+            ->get();
     }
 
     /**

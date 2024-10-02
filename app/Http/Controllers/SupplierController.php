@@ -22,10 +22,10 @@ class SupplierController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required|string|max:255',
+            'name' => 'required|string|max:255|min:1',
             'email' => 'required|string|email|max:255|unique:suppliers,email',
             'phone' => 'required|string|max:255|unique:suppliers,phone',
-            'address' => 'required|string|max:255',
+            'address' => 'required|string|max:255|min:1',
             'image' => 'nullable|image|mimes:jpeg,jpg,png,gif',
         ]);
 
@@ -71,10 +71,12 @@ class SupplierController extends Controller
     public function update(Request $request, string $id)
     {
         $request->validate([
-            'name' => 'required|string|max:255',
+            'name' => 'required|string|max:255|min:1',
             'email' => 'required|string|email|max:255|unique:suppliers,email,' . $id,
             'phone' => 'required|string|max:255|unique:suppliers,phone,' . $id,
             'image' => 'nullable|image|mimes:jpeg,jpg,png,gif',
+            'address' => 'required|string|max:255|min:1',
+
         ]);
 
         $supplier = Supplier::findOrFail($id);
@@ -105,8 +107,6 @@ class SupplierController extends Controller
         // save the supplier
         $supplier->save();
 
-        // return the supplier
-        $supplier->image = $_ENV['APP_URL'] . '/' . $supplier->image;
         return $supplier;
     }
 
