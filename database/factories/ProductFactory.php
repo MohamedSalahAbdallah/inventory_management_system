@@ -24,9 +24,10 @@ class ProductFactory extends Factory
             'sku' => $this->faker->randomNumber(6),
             'price' => $this->faker->randomFloat(2, 1, 100),
             'quantity' => $this->faker->numberBetween(0, 1000),
-            'image' => $this->faker->imageUrl(),
-            'category_id' => Category::factory(),
-            'supplier_id' => Supplier::factory(),
+            'image' => 'https://picsum.photos/800',
+
+            'category_id' => Category::inRandomOrder()->value('id'),
+            'supplier_id' => Supplier::inRandomOrder()->value('id'),
         ];
     }
 }

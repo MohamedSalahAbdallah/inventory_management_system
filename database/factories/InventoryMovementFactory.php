@@ -18,7 +18,7 @@ class InventoryMovementFactory extends Factory
     public function definition(): array
     {
         return [
-            'product_id' => Product::factory(),
+            'product_id' => Product::inRandomOrder()->value('id'),
             'quantity' => $this->faker->numberBetween(1, 100),
             'related_order_id' => $this->faker->numberBetween(1, 10),
             'movement_type' => $this->faker->randomElement(['inbound', 'outbound', 'adjustment']),

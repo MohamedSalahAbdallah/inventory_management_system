@@ -22,7 +22,7 @@ class ProductSalesOrder extends Model
 
     function product(): BelongsTo
     {
-        return $this->belongsTo(product::class, 'product_id');
+        return $this->belongsTo(Product::class, 'product_id');
     }
     function salesOrder(): BelongsTo
     {

@@ -21,8 +21,8 @@ class ProductSalesOrderFactory extends Factory
         return [
             'quantity' => $this->faker->numberBetween(1, 100),
             'price' => $this->faker->randomFloat(2, 1, 100),
-            'product_id' => Product::factory(),
-            'sales_order_id' => SalesOrder::factory(),
+            'product_id' => Product::inRandomOrder()->value('id'),
+            'sales_order_id' => SalesOrder::inRandomOrder()->value('id'),
         ];
     }
 }

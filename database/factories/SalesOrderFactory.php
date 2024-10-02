@@ -18,7 +18,7 @@ class SalesOrderFactory extends Factory
     public function definition(): array
     {
         return [
-            'user_id' => User::factory(),
+            'user_id' => User::inRandomOrder()->value('id'),
             'total_amount' => $this->faker->randomFloat(2, 1, 1000),
             'status' => $this->faker->randomElement(["pending", "processing", "shipped", "delivered", "cancelled", 'completed']),
         ];

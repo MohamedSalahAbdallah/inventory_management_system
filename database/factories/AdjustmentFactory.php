@@ -19,10 +19,10 @@ class AdjustmentFactory extends Factory
     public function definition(): array
     {
         return [
-            'product_id' => Product::factory(),
+            'product_id' => Product::inRandomOrder()->value('id'),
             'quantity_adjusted' => $this->faker->numberBetween(-100, 100),
             'reason' => $this->faker->sentence(),
-            'user_id' => User::factory(),
+            'user_id' => User::inRandomOrder()->value('id'),
         ];
     }
 }

@@ -13,7 +13,7 @@ class SupplierController extends Controller
      */
     public function index()
     {
-        return Supplier::all();
+        return Supplier::with(['products', 'purchaseOrders'])->get();
     }
 
     /**
@@ -22,26 +22,31 @@ class SupplierController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255',
-            'phone' => 'required|phone',
-            'address' => 'required|string|max:255',
+            'name' => 'required|string|max:255|min:1',
+            'email' => 'required|string|email|max:255|unique:suppliers,email',
+            'phone' => 'required|string|max:255|unique:suppliers,phone',
+            'address' => 'required|string|max:255|min:1',
             'image' => 'nullable|image|mimes:jpeg,jpg,png,gif',
         ]);
 
-        $supplier = new Supplier($request->all());
+
 
 
         if ($request->hasFile('image')) {
             $image = $request->file('image');
-            $imageName = $image->getClientOriginalName();
-            $image->storeAs('public/images', $imageName);
-            $supplier->image = $imageName;
+            $imageName = uniqid() . '_' . $image->getClientOriginalName();
+            $image->storeAs('public/images/', $imageName);
+            $imageName = 'http://127.0.0.1:8000/storage/images/' . $imageName;
         }
+        $supplier = Supplier::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'phone' => $request->phone,
+            'address' => $request->address,
+            'image' => $imageName ?? null,
 
+        ]);
 
-        $supplier->save();
-        $supplier->image = $_ENV['APP_URL'] . '/' . $supplier->image;
         return $supplier;
     }
 
@@ -50,7 +55,7 @@ class SupplierController extends Controller
      */
     public function show(string $id)
     {
-        $supplier = Supplier::findOrFail($id);
+        $supplier = Supplier::with(['products', 'purchaseOrders'])->findOrFail($id);
         return $supplier;
     }
 
@@ -66,11 +71,12 @@ class SupplierController extends Controller
     public function update(Request $request, string $id)
     {
         $request->validate([
-            'name' => 'required|string|max:255',
+            'name' => 'required|string|max:255|min:1',
             'email' => 'required|string|email|max:255|unique:suppliers,email,' . $id,
             'phone' => 'required|string|max:255|unique:suppliers,phone,' . $id,
-            'address' => 'required|string|max:255',
             'image' => 'nullable|image|mimes:jpeg,jpg,png,gif',
+            'address' => 'required|string|max:255|min:1',
+
         ]);
 
         $supplier = Supplier::findOrFail($id);
@@ -81,22 +87,26 @@ class SupplierController extends Controller
         $supplier->address = $request->address;
 
         if ($request->hasFile('image')) {
-            // remove the old image
+            // delete the old image
             if ($supplier->image != null) {
-                Storage::delete('public/images/' . $supplier->image);
+                Storage::delete(
+                    'public/images/' . str_replace("http://127.0.0.1:8000/storage/images/", "", "$supplier->image")
+                );
             }
 
+            // store the new image
             $image = $request->file('image');
-            $imageName = $image->getClientOriginalName();
-            $image->storeAs('public/images', $imageName);
+            $imageName = uniqid() . '_' . $image->getClientOriginalName();
+            $image->storeAs('public/images/', $imageName);
+            $imageName = 'http://127.0.0.1:8000/storage/images/' . $imageName;
+
+            // update the supp$supplier image
             $supplier->image = $imageName;
         }
 
         // save the supplier
         $supplier->save();
 
-        // return the supplier
-        $supplier->image = $_ENV['APP_URL'] . '/' . $supplier->image;
         return $supplier;
     }
 
@@ -107,6 +117,6 @@ class SupplierController extends Controller
     {
         $supplier = Supplier::findOrFail($id);
         $supplier->delete();
-        return "Supplier Deleted";
+        return response()->json(['message' => 'Supplier Deleted']);
     }
 }

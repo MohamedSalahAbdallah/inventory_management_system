@@ -13,7 +13,7 @@ class ProductController extends Controller
      */
     public function index()
     {
-        return Product::all();
+        return Product::with(['category', 'supplier', 'inventoryMovements', 'productSalesOrders.salesOrder', 'productPurchaseOrders.purchaseOrder', 'adjustments'])->get();
     }
 
     /**
@@ -22,9 +22,9 @@ class ProductController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required|string|max:255',
-            'description' => 'required|string',
-            'sku' => 'required|numeric|max:255|min:1|unique:products',
+            'name' => 'required|string|max:255|min:1',
+            'description' => 'required|string|min:1',
+            'sku' => 'required|numeric|min:1|unique:products',
             'price' => 'required|numeric|min:1',
             'quantity' => 'required|numeric|min:1',
             'category_id' => 'required|exists:categories,id',
@@ -59,7 +59,7 @@ class ProductController extends Controller
      */
     public function show(string $id)
     {
-        $product = Product::findOrFail($id);
+        $product = Product::with(['category', 'supplier', 'inventoryMovements', 'productSalesOrders.salesOrder', 'productPurchaseOrders.purchaseOrder', 'adjustments'])->findOrFail($id);
         return $product;
     }
 
@@ -70,14 +70,15 @@ class ProductController extends Controller
     {
         // validate the request
         $request->validate([
-            'name' => 'required|string|max:255',
-            'description' => 'required|string',
-            'sku' => 'required|numeric|max:255|min:1',
+            'name' => 'required|string|max:255|min:1',
+            'description' => 'required|string|min:1',
+            'sku' => 'required|numeric|min:1|unique:products,sku,' . $id,
             'price' => 'required|numeric|min:1',
             'quantity' => 'required|numeric|min:1',
             'category_id' => 'required|exists:categories,id',
             'supplier_id' => 'required|exists:suppliers,id',
-            'image' => 'nullable|string|max:255',
+            'image' => 'required|image|mimes:jpeg,jpg,png,gif',
+
         ]);
 
         // get the product
@@ -96,7 +97,9 @@ class ProductController extends Controller
         if ($request->hasFile('image')) {
             // delete the old image
             if ($product->image != null) {
-                Storage::delete('public/images/' . $product->image);
+                Storage::delete(
+                    'public/images/' . str_replace("http://127.0.0.1:8000/storage/images/", "", "$product->image")
+                );
             }
 
             // store the new image
@@ -122,6 +125,6 @@ class ProductController extends Controller
     {
         $product = Product::findOrFail($id);
         $product->delete();
-        return "Product Deleted";
+        return ['message' => "Product Deleted"];
     }
 }

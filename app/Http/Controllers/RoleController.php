@@ -12,7 +12,7 @@ class RoleController extends Controller
      */
     public function index()
     {
-        return Role::all();
+        return Role::with('users')->get();
     }
 
     /**
@@ -34,7 +34,7 @@ class RoleController extends Controller
      */
     public function show(string $id)
     {
-        return Role::findOrFail($id);
+        return Role::with('users')->findOrFail($id);
     }
 
     /**
@@ -60,6 +60,6 @@ class RoleController extends Controller
     {
         $role = Role::findOrFail($id);
         $role->delete();
-        return "Role Deleted";
+        return response()->json(['message' => 'Role Deleted']);
     }
 }

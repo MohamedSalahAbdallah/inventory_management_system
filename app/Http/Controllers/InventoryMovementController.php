@@ -13,7 +13,7 @@ class InventoryMovementController extends Controller
      */
     public function index()
     {
-        return InventoryMovement::all();
+        return InventoryMovement::with('product')->get();
     }
 
     /**
@@ -32,6 +32,9 @@ class InventoryMovementController extends Controller
                 new ValueExistsInTwoTables('sales_orders', 'purchase_orders', 'id')
             ],
         ]);
+
+        $inventoryMovement = InventoryMovement::create($request->all());
+        return $inventoryMovement;
     }
 
     /**
@@ -39,7 +42,7 @@ class InventoryMovementController extends Controller
      */
     public function show(string $id)
     {
-        return InventoryMovement::findOrFail($id);
+        return InventoryMovement::with('product')->findOrFail($id);
     }
 
     /**
@@ -71,6 +74,6 @@ class InventoryMovementController extends Controller
     {
         $inventoryMovement = InventoryMovement::findOrFail($id);
         $inventoryMovement->delete();
-        return "Deleted Successfully";
+        return response()->json(['message' => 'Deleted Successfully']);
     }
 }

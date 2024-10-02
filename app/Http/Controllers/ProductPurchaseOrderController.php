@@ -2,17 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\ProductSalesOrder;
+use App\Models\ProductPurchaseOrder;
 use Illuminate\Http\Request;
 
-class ProductSalesOrderController extends Controller
+class ProductPurchaseOrderController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        return ProductSalesOrder::with(['product', 'salesOrder'])->get();
+        return ProductPurchaseOrder::with(['product', 'purchaseOrder'])->get();
     }
 
     /**
@@ -24,11 +24,11 @@ class ProductSalesOrderController extends Controller
             "quantity" => 'integer|required|min:1',
             'price' => 'required|numeric|min:0',
             'product_id' => 'required|exists:products,id',
-            "sales_order_id" => 'required|exists:sales_orders,id'
+            "purchase_order_id" => 'required|exists:purchase_orders,id'
         ]);
 
-        $productSalesOrder = ProductSalesOrder::create($request->all());
-        return $productSalesOrder;
+        $productPurchaseOrder = ProductPurchaseOrder::create($request->all());
+        return $productPurchaseOrder;
     }
 
     /**
@@ -36,7 +36,7 @@ class ProductSalesOrderController extends Controller
      */
     public function show(string $id)
     {
-        return ProductSalesOrder::with(['product', 'salesOrder'])->findOrFail($id);
+        return ProductPurchaseOrder::with(['product', 'purchaseOrder'])->findOrFail($id);
     }
 
     /**
@@ -48,12 +48,12 @@ class ProductSalesOrderController extends Controller
             "quantity" => 'integer|required|min:1',
             'price' => 'required|numeric|min:0',
             'product_id' => 'required|exists:products,id',
-            "sales_order_id" => 'required|exists:sales_orders,id'
+            "purchase_order_id" => 'required|exists:purchase_orders,id'
         ]);
 
-        $productSalesOrder = ProductSalesOrder::findOrFail($id);
-        $productSalesOrder->update($request->all());
-        return $productSalesOrder;
+        $productPurchaseOrder = ProductPurchaseOrder::findOrFail($id);
+        $productPurchaseOrder->update($request->all());
+        return $productPurchaseOrder;
     }
 
     /**
@@ -61,8 +61,9 @@ class ProductSalesOrderController extends Controller
      */
     public function destroy(string $id)
     {
-        $productSalesOrder = ProductSalesOrder::findOrFail($id);
-        $productSalesOrder->delete();
-        return response()->json(['message' => 'Product Sales Order Deleted']);
+        //
+        $productPurchaseOrder = ProductPurchaseOrder::findOrFail($id);
+        $productPurchaseOrder->delete();
+        return response()->json(['message' => 'Product Purchase Order deleted successfully']);
     }
 }
