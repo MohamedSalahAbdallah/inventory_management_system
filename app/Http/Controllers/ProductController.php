@@ -22,8 +22,8 @@ class ProductController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required|string|max:255',
-            'description' => 'required|string',
+            'name' => 'required|string|max:255|min:1',
+            'description' => 'required|string|min:1',
             'sku' => 'required|numeric|min:1|unique:products',
             'price' => 'required|numeric|min:1',
             'quantity' => 'required|numeric|min:1',
@@ -70,8 +70,8 @@ class ProductController extends Controller
     {
         // validate the request
         $request->validate([
-            'name' => 'required|string|max:255',
-            'description' => 'required|string',
+            'name' => 'required|string|max:255|min:1',
+            'description' => 'required|string|min:1',
             'sku' => 'required|numeric|min:1|unique:products,sku,' . $id,
             'price' => 'required|numeric|min:1',
             'quantity' => 'required|numeric|min:1',
