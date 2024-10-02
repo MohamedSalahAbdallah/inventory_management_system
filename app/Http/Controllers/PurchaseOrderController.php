@@ -26,6 +26,10 @@ class PurchaseOrderController extends Controller
             'status' => 'required|string|max:255',
             'supplier_id' => 'required|numeric|exists:suppliers,id'
         ]);
+
+        $purchaseOrder = PurchaseOrder::create($request->all());
+
+        return $purchaseOrder;
     }
 
     /**
