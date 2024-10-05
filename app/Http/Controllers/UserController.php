@@ -36,7 +36,7 @@ class UserController extends Controller
             "role_id" => $request->role_id
         ]);
 
-        return $user;
+        return User::with(['role'])->findOrFail($user->id);;
     }
 
     /**
