@@ -6,7 +6,6 @@ use App\Models\Product;
 use App\Models\SalesOrder;
 use Illuminate\Http\Request;
 
-
 class SalesOrderController extends Controller
 {
     /**
@@ -25,8 +24,7 @@ class SalesOrderController extends Controller
         $fields = $request->validate([
             'user_id' => 'required|integer|exists:users,id',
             'total_amount' => 'required|numeric|min:1',
-            'status' => 'required|string|max:255'
-
+            'status' => 'required|in:pending,processing,shipped,delivered,cancelled,completed'
         ]);
         $salesOrder = SalesOrder::create($fields);
         return $salesOrder;
@@ -49,7 +47,7 @@ class SalesOrderController extends Controller
         $fields = $request->validate([
             'user_id' => 'required|integer|exists:users,id',
             'total_amount' => 'required|numeric|min:1',
-            'status' => 'required|string|max:255'
+            'status' => 'required|in:pending,processing,shipped,delivered,cancelled,completed'
         ]);
         $salesOrder->update($fields);
         return $salesOrder;

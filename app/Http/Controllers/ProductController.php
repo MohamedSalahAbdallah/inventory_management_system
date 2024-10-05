@@ -117,6 +117,7 @@ class ProductController extends Controller
         $product->save();
 
         // return the product
+        $product = Product::with(['category', 'supplier', 'inventoryMovements', 'productSalesOrders.salesOrder', 'productPurchaseOrders.purchaseOrder', 'adjustments'])->findOrFail($id);
         return $product;
     }
     /**
