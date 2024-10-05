@@ -44,4 +44,7 @@ Route::apiResource("purchase-orders", PurchaseOrderController::class)->middlewar
 Route::apiResource('product-purchase-orders', ProductPurchaseOrderController::class)->middleware('auth:sanctum');
 
 
-route::get('testing/{id}', [InvoicesController::class, 'salesInvoice']);
+route::get('salesInvoice/{id}', [InvoicesController::class, 'salesInvoice']);
+
+
+route::get('purchaseInvoice/{id}', [InvoicesController::class, 'purchaseInvoice']);
