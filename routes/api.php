@@ -3,6 +3,7 @@
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\InventoryMovementController;
+use App\Http\Controllers\InvoicesController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProductPurchaseOrderController;
 use App\Http\Controllers\ProductSalesOrderController;
@@ -41,3 +42,6 @@ Route::apiResource('users', UserController::class)->middleware('auth:sanctum');
 Route::apiResource("purchase-orders", PurchaseOrderController::class)->middleware('auth:sanctum');
 
 Route::apiResource('product-purchase-orders', ProductPurchaseOrderController::class)->middleware('auth:sanctum');
+
+
+route::get('testing/{id}', [InvoicesController::class, 'salesInvoice']);
