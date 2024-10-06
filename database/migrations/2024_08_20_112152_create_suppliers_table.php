@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('phone')->unique();
             $table->string('address');
             $table->string('image');
+            $table->softDeletes();
             $table->timestamps();
         });
     }
