@@ -5,10 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Spatie\Activitylog\Traits\LogsActivity;
+use Spatie\Activitylog\LogOptions;
 
 class Adjustment extends Model
 {
-    use HasFactory;
+    use HasFactory,LogsActivity;
 
     protected $fillable = [
         'product_id',
@@ -17,6 +19,15 @@ class Adjustment extends Model
         'user_id',
     ];
 
+      // Implement the getActivitylogOptions method
+      public function getActivitylogOptions(): LogOptions
+      {
+          return LogOptions::defaults()
+              ->logOnly(['product_id','quantity_adjustment','reason','user_id'])
+              ->logOnlyDirty()               
+              ->useLogName('Adjustment')                
+              ->setDescriptionForEvent(fn(string $eventName) => "Adjustment {$eventName}");  
+      }
 
     public function product(): BelongsTo
     {
