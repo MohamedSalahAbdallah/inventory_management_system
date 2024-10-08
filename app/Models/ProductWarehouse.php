@@ -8,7 +8,17 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class ProductWarehouse extends Model
 {
-    use HasFactory,SoftDeletes;
+    use HasFactory, SoftDeletes;
 
     protected $table = 'product_warehouse';
+
+    public function product()
+    {
+        return $this->belongsTo(Product::class);
+    }
+
+    public function warehouse()
+    {
+        return $this->belongsTo(Warehouse::class);
+    }
 }

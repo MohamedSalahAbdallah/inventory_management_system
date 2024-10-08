@@ -8,6 +8,17 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Warehouse extends Model
 {
-    use HasFactory,SoftDeletes;
+    use HasFactory, SoftDeletes;
 
+
+    protected $fillable = [
+        'name',
+        'location',
+        'total_capacity'
+    ];
+
+    public function sections()
+    {
+        return $this->hasMany(WarehouseSection::class);
+    }
 }
