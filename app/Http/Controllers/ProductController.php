@@ -78,7 +78,6 @@ class ProductController extends Controller
             'quantity' => 'required|numeric|min:1',
             'category_id' => 'required|exists:categories,id',
             'supplier_id' => 'required|exists:suppliers,id',
-            'image' => 'nullable|image|mimes:jpeg,jpg,png,gif',
 
         ]);
 
@@ -96,6 +95,9 @@ class ProductController extends Controller
 
         // handle the image
         if ($request->hasFile('image')) {
+            $request->validate([
+                'image' => 'required|image|mimes:jpeg,jpg,png,gif',
+            ]);
             // delete the old image
             if ($product->image != null) {
                 Storage::delete(
