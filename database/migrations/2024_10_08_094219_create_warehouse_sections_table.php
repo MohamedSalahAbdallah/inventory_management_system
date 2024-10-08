@@ -19,6 +19,7 @@ return new class extends Migration {
             $table->integer('capacity');
             $table->integer('empty_slots');
             $table->integer('reserved_slots');
+            $table->softDeletes();
             $table->timestamps();
         });
     }

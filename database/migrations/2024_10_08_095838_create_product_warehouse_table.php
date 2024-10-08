@@ -17,6 +17,7 @@ return new class extends Migration {
             $table->foreignIdFor(WarehouseSection::class)->constrained()->cascadeOnDelete();
             $table->foreignIdFor(Product::class)->constrained()->cascadeOnDelete();
             $table->integer('quantity');
+            $table->softDeletes();
             $table->timestamps();
         });
     }
