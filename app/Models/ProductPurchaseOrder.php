@@ -25,8 +25,8 @@ class ProductPurchaseOrder extends Model
          return LogOptions::defaults()
              ->logOnly(['quantity','price','product_id','purchase_order_id'])
              ->logOnlyDirty()               
-             ->useLogName('ProductPuchaseOrder')                
-             ->setDescriptionForEvent(fn(string $eventName) => "ProductPuchaseOrder {$eventName}");  
+             ->useLogName('ProductPurchaseOrder')                
+             ->setDescriptionForEvent(fn(string $eventName) => "ProductPurchaseOrder {$eventName}");  
      }
 
     public function product(): BelongsTo

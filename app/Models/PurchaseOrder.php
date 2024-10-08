@@ -28,8 +28,8 @@ class PurchaseOrder extends Model
          return LogOptions::defaults()
              ->logOnly(['user_id','supplier_id','total_amount','status'])
              ->logOnlyDirty()               
-             ->useLogName('PuchaseOrder')                
-             ->setDescriptionForEvent(fn(string $eventName) => "PuchaseOrder {$eventName}");  
+             ->useLogName('PurchaseOrder')                
+             ->setDescriptionForEvent(fn(string $eventName) => "PurchaseOrder {$eventName}");  
      }
 
 
