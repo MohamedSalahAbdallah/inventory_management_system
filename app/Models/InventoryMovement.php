@@ -5,10 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Spatie\Activitylog\Traits\LogsActivity;
+use Spatie\Activitylog\LogOptions;
 
 class InventoryMovement extends Model
 {
-    use HasFactory;
+    use HasFactory,LogsActivity;
 
     protected $fillable = [
         'product_id',
@@ -17,6 +19,15 @@ class InventoryMovement extends Model
         'movement_type',
     ];
 
+    // Implement the getActivitylogOptions method
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->logOnly(['product_id','quantity','related_order_id','movement_type'])
+            ->logOnlyDirty()               
+            ->useLogName('InventoryMovement')                
+            ->setDescriptionForEvent(fn(string $eventName) => "InventoryMovement {$eventName}");  
+    }
 
     public function product(): BelongsTo
     {
