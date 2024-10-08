@@ -11,6 +11,7 @@ use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SalesOrderController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\ActivityLogController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -41,3 +42,8 @@ Route::apiResource('users', UserController::class)->middleware('auth:sanctum');
 Route::apiResource("purchase-orders", PurchaseOrderController::class)->middleware('auth:sanctum');
 
 Route::apiResource('product-purchase-orders', ProductPurchaseOrderController::class)->middleware('auth:sanctum');
+
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/logs', [ActivityLogController::class, 'index']);          
+    Route::get('/logs/user/{userId}', [ActivityLogController::class, 'getUserLogs']);
+});
