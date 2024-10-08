@@ -13,7 +13,7 @@ class SupplierController extends Controller
      */
     public function index()
     {
-        return Supplier::with(['products', 'purchaseOrders'])->get();
+        return Supplier::with(['products.category', 'purchaseOrders'])->get();
     }
 
     /**
