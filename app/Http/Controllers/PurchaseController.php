@@ -27,6 +27,7 @@ class PurchaseController extends Controller
             'supplier_id' => 'required|numeric|exists:suppliers,id'
         ]);
 
+        $totalAmount = 0;
 
 
         $request->request->add(['user_id' => auth('sanctum')->id()]);
@@ -51,8 +52,12 @@ class PurchaseController extends Controller
                 'price' => $product['price'],
                 'quantity' => $product['quantity'],
             ]);
+            $totalAmount += $product['price'] * $product['quantity'];
         }
 
+        $purchaseOrder->update([
+            'total_amount' => $totalAmount,
+        ]);
         $purchaseOrder = PurchaseOrder::with(['user', 'supplier', 'productPurchaseOrders.product'])->findOrFail($purchaseOrder->id);
         return $purchaseOrder;
     }
