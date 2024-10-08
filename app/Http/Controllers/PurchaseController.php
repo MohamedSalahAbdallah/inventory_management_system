@@ -34,14 +34,27 @@ class PurchaseController extends Controller
 
         $purchaseOrder = PurchaseOrder::create($request->all());
 
+
+
         $request->validate([
-            "quantity" => 'integer|required|min:1',
-            'price' => 'required|numeric|min:0',
-            'product_id' => 'required|exists:products,id',
-            "purchase_order_id" => 'required|exists:purchase_orders,id'
+            'products' => 'required|array|min:1',
+            'products.*.product_id' => 'required|integer|exists:products,id',
+            'products.*.price' => 'required|numeric|min:0',
+            'products.*.quantity' => 'required|integer|min:1',
         ]);
 
-        $productPurchaseOrder = ProductPurchaseOrder::create($request->all());
+        foreach ($request->products as $product) {
+
+            ProductPurchaseOrder::create([
+                'purchase_order_id' => $purchaseOrder->id,
+                'product_id' => $product['product_id'],
+                'price' => $product['price'],
+                'quantity' => $product['quantity'],
+            ]);
+        }
+
+        $purchaseOrder = PurchaseOrder::with(['user', 'supplier', 'productPurchaseOrders.product'])->findOrFail($purchaseOrder->id);
+        return $purchaseOrder;
     }
 
     /**
@@ -49,7 +62,7 @@ class PurchaseController extends Controller
      */
     public function show(string $id)
     {
-        //
+        return PurchaseOrder::with(['user', 'supplier', 'productPurchaseOrders.product'])->findOrFail($id);
     }
 
     /**
@@ -65,6 +78,8 @@ class PurchaseController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $purchaseOrder = PurchaseOrder::findOrFail($id);
+        $purchaseOrder->delete();
+        return response()->json(['message' => "Deleted Successfully"]);
     }
 }

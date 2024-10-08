@@ -7,6 +7,7 @@ use App\Http\Controllers\InvoicesController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProductPurchaseOrderController;
 use App\Http\Controllers\ProductSalesOrderController;
+use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\PurchaseOrderController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SalesOrderController;
@@ -48,3 +49,5 @@ route::get('salesInvoice/{id}', [InvoicesController::class, 'salesInvoice']);
 
 
 route::get('purchaseInvoice/{id}', [InvoicesController::class, 'purchaseInvoice']);
+
+Route::apiResource('purchase', PurchaseController::class);
