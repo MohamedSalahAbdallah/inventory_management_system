@@ -17,6 +17,7 @@ return new class extends Migration
             $table->integer('quantity_adjusted');
             $table->string('reason');
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
+            $table->softDeletes();
             $table->timestamps();
         });
     }

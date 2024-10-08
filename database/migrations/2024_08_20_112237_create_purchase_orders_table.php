@@ -17,6 +17,7 @@ return new class extends Migration
             $table->foreignId("supplier_id")->constrained("suppliers")->onDelete("cascade");
             $table->float("total_amount")->default(0);
             $table->enum("status", ["pending", "processing", "shipped", "delivered", "cancelled", 'completed'])->default("pending");
+            $table->softDeletes();
             $table->timestamps();
         });
     }
