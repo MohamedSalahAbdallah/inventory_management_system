@@ -64,8 +64,8 @@ class InvoicesController extends Controller
         $purchaseOrder = PurchaseOrder::with(['user', 'supplier', 'productPurchaseOrders.product'])->findOrFail($id);
 
         $buyer = new Party([
-            'name' => 'Your Company Name', // Fetch dynamically if needed
-            'address' => '123 Your Address, City, Country',
+            'name' => 'Inventive', // Fetch dynamically if needed
+            'address' => 'ITI',
             'phone' => '+1 (555) 123-4567', // Your company's phone number
             'custom_fields' => [
                 'VAT ID' => 'VAT123456789', // Example VAT or tax number
