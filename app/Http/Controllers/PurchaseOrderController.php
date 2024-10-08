@@ -21,14 +21,17 @@ class PurchaseOrderController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'user_id' => 'required|integer|exists:users,id',
-            'total_amount' => 'required|numeric|min:1',
-            'status' => 'required|in:pending,processing,shipped,delivered,cancelled,completed',
             'supplier_id' => 'required|numeric|exists:suppliers,id'
         ]);
 
+
+
+        $request->request->add(['user_id' => auth('sanctum')->id()]);
+
+
         $purchaseOrder = PurchaseOrder::create($request->all());
 
+        $purchaseOrder = PurchaseOrder::findOrFail($purchaseOrder->id);
         return $purchaseOrder;
     }
 
