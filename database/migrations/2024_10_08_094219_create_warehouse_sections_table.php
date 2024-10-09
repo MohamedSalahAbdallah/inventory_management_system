@@ -15,7 +15,7 @@ return new class extends Migration {
             $table->id();
             $table->foreignIdFor(Warehouse::class)->constrained()->cascadeOnDelete();
             $table->string('section_name');
-            $table->enum('section_type', ['refrigerator', 'shelves', 'other']);
+            $table->enum('section_type', ['refrigerator', 'shelves', 'other'])->default("shelves");
             $table->integer('capacity');
             $table->integer('empty_slots');
             $table->integer('reserved_slots');
