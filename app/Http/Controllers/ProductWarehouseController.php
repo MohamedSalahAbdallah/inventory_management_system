@@ -45,19 +45,19 @@ class ProductWarehouseController extends Controller
         $updatedProductWarehouse = [];
         if ($request->warehouse_section_id != $productWarehouse->warehouse_section_id) {
             $request->validate([
-                'warehouse_section_id' => 'integer|min:1|exists:warehouse_sections,id'
+                'warehouse_section_id' => 'required|integer|min:1|exists:warehouse_sections,id'
             ]);
             $updatedProductWarehouse['warehouse_section_id'] = $request->warehouse_section_id;
         }
         if ($request->product_id != $productWarehouse->product_id) {
             $request->validate([
-                'product_id' => 'integer|min:1|exists:products,id'
+                'product_id' => 'required|integer|min:1|exists:products,id'
             ]);
             $updatedProductWarehouse['product_id'] = $request->product_id;
         }
         if ($request->quantity != $productWarehouse->quantity) {
             $request->validate([
-                'quantity' => 'integer|min:0'
+                'quantity' => 'required|integer|min:0'
             ]);
             $updatedProductWarehouse['quantity'] = $request->quantity;
         }

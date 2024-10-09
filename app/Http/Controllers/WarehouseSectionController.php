@@ -53,7 +53,7 @@ class WarehouseSectionController extends Controller
         $updatedWarehouseSection = [];
         if ($request->warehouse_id != $warehouseSection->warehouse_id) {
             $request->validate([
-                'warehouse_id' => 'integer|min:1|exists:warehouses,id'
+                'warehouse_id' => 'required|integer|min:1|exists:warehouses,id'
 
             ]);
             $updatedWarehouseSection['warehouse_id'] = $request->warehouse_id;
@@ -62,6 +62,7 @@ class WarehouseSectionController extends Controller
         if ($request->section_name != $warehouseSection->section_name) {
             $request->validate([
                 'section_name' => [
+                    'required',
                     'string',
                     'min:3',
                     Rule::unique('warehouse_sections', 'section_name')->ignore($warehouseSection)->whereNull('deleted_at')
@@ -72,28 +73,28 @@ class WarehouseSectionController extends Controller
 
         if ($request->section_type != $warehouseSection->section_type) {
             $request->validate([
-                'section_type' => 'in:refrigerator,shelves,other'
+                'section_type' => 'required|in:refrigerator,shelves,other'
             ]);
             $updatedWarehouseSection['section_type'] = $request->section_type;
         }
 
         if ($request->capacity != $warehouseSection->capacity) {
             $request->validate([
-                'capacity' => 'integer|min:1'
+                'capacity' => 'required|integer|min:1'
             ]);
             $updatedWarehouseSection['capacity'] = $request->capacity;
         }
 
         if ($request->empty_slots != $warehouseSection->empty_slots) {
             $request->validate([
-                'empty_slots' => 'integer|min:0'
+                'empty_slots' => 'required|integer|min:0'
             ]);
             $updatedWarehouseSection['empty_slots'] = $request->empty_slots;
         }
 
         if ($request->reserved_slots != $warehouseSection->reserved_slots) {
             $request->validate([
-                'reserved_slots' => 'integer|min:0'
+                'reserved_slots' => 'required|integer|min:0'
             ]);
             $updatedWarehouseSection['reserved_slots'] = $request->reserved_slots;
         }
