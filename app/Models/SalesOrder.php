@@ -13,7 +13,6 @@ class SalesOrder extends Model
     protected $fillable = [
         'user_id',
         'total_amount',
-        'status',
     ];
 
 

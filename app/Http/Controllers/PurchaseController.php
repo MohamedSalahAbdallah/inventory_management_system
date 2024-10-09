@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Product;
 use App\Models\ProductPurchaseOrder;
 use App\Models\PurchaseOrder;
 use Illuminate\Http\Request;
@@ -53,6 +54,8 @@ class PurchaseController extends Controller
                 'quantity' => $product['quantity'],
             ]);
             $totalAmount += $product['price'] * $product['quantity'];
+            // $productInstance = Product::findOrFail($product['product_id']);
+            // $productInstance->decrement('quantity', $product['quantity']);
         }
 
         $purchaseOrder->update([
