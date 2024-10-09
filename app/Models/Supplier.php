@@ -5,10 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Spatie\Activitylog\Traits\LogsActivity;
+use Spatie\Activitylog\LogOptions;
 
 class Supplier extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes, LogsActivity;
+
 
     protected $fillable = [
         'name',
@@ -17,6 +21,15 @@ class Supplier extends Model
         'address',
         'image'
     ];
+    // Implement the getActivitylogOptions method
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->logOnly(['name', 'email', 'phone', 'address', 'image'])
+            ->logOnlyDirty()
+            ->useLogName('Supplier')
+            ->setDescriptionForEvent(fn(string $eventName) => "Supplier {$eventName}");
+    }
 
     public function products(): HasMany
     {

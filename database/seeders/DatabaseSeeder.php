@@ -28,12 +28,12 @@ class DatabaseSeeder extends Seeder
         User::factory(10)->create();
         Category::factory(10)->create();
         Supplier::factory(10)->create();
-        Product::factory(10)->create();
-        SalesOrder::factory(25)->create();
-        PurchaseOrder::factory(25)->create();
+        Product::factory(100)->create();
+        SalesOrder::factory(20)->create();
+        PurchaseOrder::factory(20)->create();
         InventoryMovement::factory(25)->create();
-        ProductSalesOrder::factory(25)->create();
-        ProductPurchaseOrder::factory(25)->create();
+        ProductSalesOrder::factory(100)->create();
+        ProductPurchaseOrder::factory(100)->create();
         Adjustment::factory(25)->create();
     }
 }

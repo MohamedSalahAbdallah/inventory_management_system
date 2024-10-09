@@ -17,7 +17,7 @@ return new class extends Migration
             $table->integer('quantity');
             $table->unsignedBigInteger('related_order_id');
             $table->enum('movement_type', ['inbound', 'outbound', 'adjustment']);
-
+            $table->softDeletes();
             $table->timestamps();
         });
     }

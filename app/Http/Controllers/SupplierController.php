@@ -13,7 +13,7 @@ class SupplierController extends Controller
      */
     public function index()
     {
-        return Supplier::with(['products', 'purchaseOrders'])->get();
+        return Supplier::get();
     }
 
     /**
@@ -55,7 +55,7 @@ class SupplierController extends Controller
      */
     public function show(string $id)
     {
-        $supplier = Supplier::with(['products', 'purchaseOrders'])->findOrFail($id);
+        $supplier = Supplier::with(['products.category', 'purchaseOrders'])->findOrFail($id);
         return $supplier;
     }
 
@@ -106,7 +106,7 @@ class SupplierController extends Controller
 
         // save the supplier
         $supplier->save();
-
+        $supplier = Supplier::with(['products.category', 'purchaseOrders'])->findOrFail($id);
         return $supplier;
     }
 

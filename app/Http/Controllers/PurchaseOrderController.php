@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Product;
 use App\Models\PurchaseOrder;
 use Illuminate\Http\Request;
 
@@ -21,14 +22,17 @@ class PurchaseOrderController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'user_id' => 'required|integer|exists:users,id',
-            'total_amount' => 'required|numeric|min:1',
-            'status' => 'required|string|max:255',
             'supplier_id' => 'required|numeric|exists:suppliers,id'
         ]);
 
+
+
+        $request->request->add(['user_id' => auth('sanctum')->id()]);
+
+
         $purchaseOrder = PurchaseOrder::create($request->all());
 
+        $purchaseOrder = PurchaseOrder::findOrFail($purchaseOrder->id);
         return $purchaseOrder;
     }
 
@@ -46,14 +50,26 @@ class PurchaseOrderController extends Controller
     public function update(Request $request, string $id)
     {
         $request->validate([
-            'user_id' => 'required|integer|exists:users,id',
-            'total_amount' => 'required|numeric|min:1',
-            'status' => 'required|string|max:255',
-            'supplier_id' => 'required|numeric|exists:suppliers,id'
+
+            'status' => 'required|in:pending,processing,shipped,delivered,cancelled,completed',
         ]);
 
-        $purchaseOrder = PurchaseOrder::findOrFail($id);
-        $purchaseOrder->update($request->all());
+
+
+        $purchaseOrder = PurchaseOrder::with(['user', 'supplier', 'productPurchaseOrders.product'])->findOrFail($id);
+
+        if ($purchaseOrder->status == 'delivered') {
+            # code...
+            foreach ($purchaseOrder->productPurchaseOrders as $item) {
+                $product = Product::findOrFail($item->product->id);
+                $product->quantity += $item->quantity;
+                $product->save();
+            }
+        }
+        $purchaseOrder->update([
+            'status' => $request->status,
+        ]);
+        $purchaseOrder = PurchaseOrder::with(['user', 'supplier', 'productPurchaseOrders.product'])->findOrFail($id);
         return $purchaseOrder;
     }
 

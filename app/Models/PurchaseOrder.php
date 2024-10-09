@@ -6,10 +6,13 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Spatie\Activitylog\Traits\LogsActivity;
+use Spatie\Activitylog\LogOptions;
 
 class PurchaseOrder extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes,LogsActivity;
 
 
 
@@ -19,6 +22,16 @@ class PurchaseOrder extends Model
         'total_amount',
         'status',
     ];
+
+     // Implement the getActivitylogOptions method
+     public function getActivitylogOptions(): LogOptions
+     {
+         return LogOptions::defaults()
+             ->logOnly(['user_id','supplier_id','total_amount','status'])
+             ->logOnlyDirty()
+             ->useLogName('PurchaseOrder')
+             ->setDescriptionForEvent(fn(string $eventName) => "PurchaseOrder {$eventName}");
+     }
 
 
     public function user(): BelongsTo

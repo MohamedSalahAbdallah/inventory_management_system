@@ -24,8 +24,8 @@ class InventoryMovementController extends Controller
         $request->validate([
             'product_id' => 'required|exists:products,id',
             'quantity' => "required|numeric|min:1",
-            'movement_type' => 'required|string|in:inbound, outbound, adjustment',
-            'related_order_id' =>  [
+            'movement_type' => 'required|string|in:inbound,outbound,adjustment',
+            'related_order_id' => [
                 'required',
                 'numeric',
                 'min:1',
@@ -53,8 +53,8 @@ class InventoryMovementController extends Controller
         $request->validate([
             'product_id' => 'required|exists:products,id',
             'quantity' => "required|numeric|min:1",
-            'movement_type' => 'required|string|in:inbound, outbound, adjustment',
-            'related_order_id' =>  [
+            'movement_type' => 'required|string|in:inbound,outbound,adjustment',
+            'related_order_id' => [
                 'required',
                 'numeric',
                 'min:1',
