@@ -55,7 +55,7 @@ class SupplierController extends Controller
      */
     public function show(string $id)
     {
-        $supplier = Supplier::with(['products.category', 'purchaseOrders'])->findOrFail($id);
+        $supplier = Supplier::with(['products.category', 'purchaseOrders.user'])->findOrFail($id);
         return $supplier;
     }
 
