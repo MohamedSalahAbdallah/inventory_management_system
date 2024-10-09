@@ -13,6 +13,7 @@ use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SalesOrderController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\ActivityLogController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -51,3 +52,7 @@ route::get('salesInvoice/{id}', [InvoicesController::class, 'salesInvoice']);
 route::get('purchaseInvoice/{id}', [InvoicesController::class, 'purchaseInvoice']);
 
 Route::apiResource('purchase', PurchaseController::class);
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/logs', [ActivityLogController::class, 'index']);
+    Route::get('/logs/user/{userId}', [ActivityLogController::class, 'getUserLogs']);
+});
