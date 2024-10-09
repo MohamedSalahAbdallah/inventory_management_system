@@ -10,6 +10,12 @@ class ProductWarehouse extends Model
 {
     use HasFactory, SoftDeletes;
 
+    protected $fillable = [
+        'warehouse_section_id',
+        'product_id',
+        'quantity',
+    ];
+
     protected $table = 'product_warehouse';
 
     public function product()
