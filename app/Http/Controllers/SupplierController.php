@@ -106,7 +106,7 @@ class SupplierController extends Controller
 
         // save the supplier
         $supplier->save();
-
+        $supplier = Supplier::with(['products', 'purchaseOrders'])->findOrFail($id);
         return $supplier;
     }
 
