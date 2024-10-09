@@ -8,12 +8,15 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProductPurchaseOrderController;
 use App\Http\Controllers\ProductSalesOrderController;
 use App\Http\Controllers\PurchaseController;
+use App\Http\Controllers\ProductWarehouseController;
 use App\Http\Controllers\PurchaseOrderController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SalesOrderController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ActivityLogController;
+use App\Http\Controllers\WarehouseController;
+use App\Http\Controllers\WarehouseSectionController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -56,3 +59,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/logs', [ActivityLogController::class, 'index']);
     Route::get('/logs/user/{userId}', [ActivityLogController::class, 'getUserLogs']);
 });
+Route::apiResource('warehouses', WarehouseController::class)->middleware('auth:sanctum');
+
+Route::apiResource('warehouse-sections', WarehouseSectionController::class)->middleware('auth:sanctum');
+
+Route::apiResource('product-warehouses', ProductWarehouseController::class)->middleware('auth:sanctum');
