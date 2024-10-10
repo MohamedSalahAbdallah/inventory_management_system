@@ -22,23 +22,24 @@ class SalesController extends Controller
      */
     public function store(Request $request)
     {
+        $fields = [];
+        if (isset($request->customer)) {
+            $request->validate([
+                'customer.name' => 'required|string|max:255',
+                'customer.phone' => 'required|string|regex:/^\+?[0-9]{10,15}$/',
+            ]);
 
-        $request->validate([
-            'customer.name' => 'required|string|max:255',
-            'customer.phone' => 'required|string|regex:/^\+?[0-9]{10,15}$/',
-        ]);
+            $customer = Customer::where('phone', $request->customer['phone'])->first();
 
-        $customer = Customer::where('phone', $request->customer['phone'])->first();
-
-        if (!$customer) {
-            $customer = Customer::create($request->customer);
+            if (!$customer) {
+                $customer = Customer::create($request->customer);
+            }
+            $fields['customer_id'] = $customer->id;
         }
 
 
-        $fields = [];
         $fields['user_id'] = auth('sanctum')->id();
         $fields['total_amount'] = 0;
-        $fields['customer_id'] = $customer->id;
         $salesOrder = SalesOrder::create($fields);
         $totalAmount = 0;
         $fields = $request->validate([
