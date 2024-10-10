@@ -18,16 +18,28 @@ class InvoicesController extends Controller
 
         $saleOrder = SalesOrder::with(['user', 'productSalesOrders.product', 'customer'])->findOrFail($id);
 
-        if (!$saleOrder->customer->name) {
-            $saleOrder->customer->name = 'Name not provided';
-        }
-        $customer = new Buyer([
+        if (isset($saleOrder->customer)) {
 
-            'name'          => $saleOrder->customer->name,
-            'custom_fields' => [
-                'phone'         => $saleOrder->customer->phone,
-            ]
-        ]);
+            if (!$saleOrder->customer->name) {
+                $saleOrder->customer->name = 'Name not provided';
+            }
+            $customer = new Buyer([
+
+                'name'          => $saleOrder->customer->name,
+                'custom_fields' => [
+                    'phone'         => $saleOrder->customer->phone,
+                ]
+            ]);
+        } else {
+            $customer = new Buyer([
+
+                'name'          => 'Name not provided',
+                'custom_fields' => [
+                    'phone'         => 'Phone not provided',
+                ]
+            ]);
+        }
+
 
         $items = [];
 
