@@ -23,7 +23,7 @@ class WarehouseSectionController extends Controller
     {
         $fields = $request->validate([
             'warehouse_id' => 'required|integer|min:1|exists:warehouses,id',
-            'section_name' => 'required|string|min:3|unique:warehouse_sections,section_name',
+            'section_name' => 'required|string|min:3',
             'section_type' => 'required|in:refrigerator,shelves,other',
             'capacity' => 'required|integer|min:1',
             'empty_slots' => 'required|integer|min:0',
@@ -34,6 +34,7 @@ class WarehouseSectionController extends Controller
                 'message' => 'The total of empty slots and reserved slots cannot exceed the capacity of the section.'
             ], 422);
         }
+
         return WarehouseSection::create($fields);
     }
 
@@ -61,12 +62,7 @@ class WarehouseSectionController extends Controller
 
         if ($request->section_name != $warehouseSection->section_name) {
             $request->validate([
-                'section_name' => [
-                    'required',
-                    'string',
-                    'min:3',
-                    Rule::unique('warehouse_sections', 'section_name')->ignore($warehouseSection)->whereNull('deleted_at')
-                ]
+                'section_name' => ['required', 'string', 'min:3',]
             ]);
             $updatedWarehouseSection['section_name'] = $request->section_name;
         }
