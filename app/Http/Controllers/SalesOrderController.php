@@ -35,7 +35,7 @@ class SalesOrderController extends Controller
      */
     public function show(string $id)
     {
-        return SalesOrder::with(['user', 'productSalesOrders.product'])->findOrFail($id);
+        return SalesOrder::with(['user', 'productSalesOrders.product', 'customer'])->findOrFail($id);
     }
 
     /**
