@@ -15,6 +15,7 @@ use App\Http\Controllers\SalesOrderController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ActivityLogController;
+use App\Http\Controllers\SalesController;
 use App\Http\Controllers\WarehouseController;
 use App\Http\Controllers\WarehouseSectionController;
 use Illuminate\Http\Request;
@@ -64,3 +65,5 @@ Route::apiResource('warehouses', WarehouseController::class)->middleware('auth:s
 Route::apiResource('warehouse-sections', WarehouseSectionController::class)->middleware('auth:sanctum');
 
 Route::apiResource('product-warehouses', ProductWarehouseController::class)->middleware('auth:sanctum');
+
+Route::apiResource('sales', SalesController::class);
