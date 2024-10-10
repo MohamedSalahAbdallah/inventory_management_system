@@ -7,6 +7,7 @@ use App\Models\Product;
 use App\Models\ProductSalesOrder;
 use App\Models\SalesOrder;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class SalesController extends Controller
 {
@@ -23,59 +24,65 @@ class SalesController extends Controller
      */
     public function store(Request $request)
     {
-        $fields = [];
-        if (isset($request->customer) && $request->customer['phone']) {
-            $request->validate([
-                'customer.name' => 'nullable|string|max:255',
-                'customer.phone' => 'required|string|regex:/^\+?[0-9]{10,15}$/',
-            ]);
 
-            $customer = Customer::where('phone', $request->customer['phone'])->first();
+        try {
+            return DB::transaction(function () use ($request) {
+                $fields = [];
+                if (isset($request->customer) && $request->customer['phone']) {
+                    $request->validate([
+                        'customer.name' => 'nullable|string|max:255',
+                        'customer.phone' => 'required|string|regex:/^\+?[0-9]{10,15}$/',
+                    ]);
 
-            if (!$customer) {
-                $customer = Customer::create($request->customer);
-            }
-            $fields['customer_id'] = $customer->id;
+                    $customer = Customer::where('phone', $request->customer['phone'])->first();
+
+                    if (!$customer) {
+                        $customer = Customer::create($request->customer);
+                    }
+                    $fields['customer_id'] = $customer->id;
+                }
+
+                $fields['user_id'] = auth('sanctum')->id();
+                $fields['total_amount'] = 0;
+                $salesOrder = SalesOrder::create($fields);
+                $totalAmount = 0;
+                $fields = $request->validate([
+                    'products' => 'required|array|min:1',
+                    'products.*.product_id' => 'required|integer|exists:products,id',
+                    'products.*.price' => 'required|numeric|min:0',
+                    'products.*.quantity' => 'required|integer|min:1',
+
+                ]);
+
+                foreach ($fields['products'] as $product) {
+                    $productInstance = Product::findOrFail($product['product_id']);
+                    $availableQuantity = $productInstance->quantity;
+                    $requestedQuantity = $product['quantity'];
+                    if ($requestedQuantity > $availableQuantity) {
+                        throw new \Exception("The requested quantity for product {$productInstance->name} is more than the available quantity '{$availableQuantity}'");
+                    }
+
+                    ProductSalesOrder::create([
+                        'sales_order_id' => $salesOrder->id,
+                        'product_id' => $product['product_id'],
+                        'price' => $product['price'],
+                        'quantity' => $product['quantity'],
+                    ]);
+
+                    $totalAmount += $product['price'] * $product['quantity'];
+                    $productInstance->decrement('quantity', $product['quantity']);
+                }
+
+                $salesOrder->total_amount = $totalAmount;
+                $salesOrder->save();
+
+                $salesOrder = SalesOrder::with(['user', 'productSalesOrders.product', 'customer'])->findOrFail($salesOrder->id);
+
+                return $salesOrder;
+            });
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 400);
         }
-
-
-        $fields['user_id'] = auth('sanctum')->id();
-        $fields['total_amount'] = 0;
-        $salesOrder = SalesOrder::create($fields);
-        $totalAmount = 0;
-        $fields = $request->validate([
-            'products' => 'required|array|min:1',
-            'products.*.product_id' => 'required|integer|exists:products,id',
-            'products.*.price' => 'required|numeric|min:0',
-            'products.*.quantity' => 'required|integer|min:1',
-        ]);
-
-        foreach ($fields['products'] as $product) {
-            $productInstance = Product::findOrFail($product['product_id']);
-            $availableQuantity = $productInstance->quantity;
-            $requestedQuantity = $product['quantity'];
-            if ($requestedQuantity > $availableQuantity) {
-                return response()->json(['message' => "The requested quantity for product id {$product['product_id']} is more than the available quantity {$availableQuantity}"], 422);
-            }
-
-            ProductSalesOrder::create([
-                'sales_order_id' => $salesOrder->id,
-                'product_id' => $product['product_id'],
-                'price' => $product['price'],
-                'quantity' => $product['quantity'],
-            ]);
-
-            $totalAmount += $product['price'] * $product['quantity'];
-            $productInstance->decrement('quantity', $product['quantity']);
-        }
-
-        $salesOrder->total_amount = $totalAmount;
-        $salesOrder->save();
-
-        $salesOrder = SalesOrder::with(['user', 'productSalesOrders.product', 'customer'])->findOrFail($salesOrder->id);
-
-
-        return $salesOrder;
     }
     /**
      * Display the specified resource.
