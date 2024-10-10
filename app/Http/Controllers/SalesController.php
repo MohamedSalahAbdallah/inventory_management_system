@@ -51,6 +51,12 @@ class SalesController extends Controller
         ]);
 
         foreach ($fields['products'] as $product) {
+            $productInstance = Product::findOrFail($product['product_id']);
+            $availableQuantity = $productInstance->quantity;
+            $requestedQuantity = $product['quantity'];
+            if ($requestedQuantity > $availableQuantity) {
+                return response()->json(['message' => "The requested quantity for product id {$product['product_id']} is more than the available quantity {$availableQuantity}"], 422);
+            }
 
             ProductSalesOrder::create([
                 'sales_order_id' => $salesOrder->id,
@@ -60,7 +66,6 @@ class SalesController extends Controller
             ]);
 
             $totalAmount += $product['price'] * $product['quantity'];
-            $productInstance = Product::findOrFail($product['product_id']);
             $productInstance->decrement('quantity', $product['quantity']);
         }
 
