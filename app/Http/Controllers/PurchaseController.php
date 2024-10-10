@@ -55,8 +55,7 @@ class PurchaseController extends Controller
                 'quantity' => $product['quantity'],
             ]);
             $totalAmount += $product['price'] * $product['quantity'];
-            // $productInstance = Product::findOrFail($product['product_id']);
-            // $productInstance->decrement('quantity', $product['quantity']);
+            
         }
 
         $purchaseOrder->update([

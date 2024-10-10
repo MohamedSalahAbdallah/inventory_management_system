@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Customer;
+use App\Models\Product;
 use App\Models\ProductSalesOrder;
 use App\Models\SalesOrder;
 use Illuminate\Http\Request;
@@ -59,6 +60,8 @@ class SalesController extends Controller
             ]);
 
             $totalAmount += $product['price'] * $product['quantity'];
+            $productInstance = Product::findOrFail($product['product_id']);
+            $productInstance->decrement('quantity', $product['quantity']);
         }
 
         $salesOrder->total_amount = $totalAmount;
@@ -69,7 +72,6 @@ class SalesController extends Controller
 
         return $salesOrder;
     }
-
     /**
      * Display the specified resource.
      */
