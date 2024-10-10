@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Customer;
 use App\Models\ProductSalesOrder;
 use App\Models\SalesOrder;
 use Illuminate\Http\Request;
@@ -21,9 +22,23 @@ class SalesController extends Controller
      */
     public function store(Request $request)
     {
+
+        $request->validate([
+            'customer.name' => 'required|string|max:255',
+            'customer.phone' => 'required|string|regex:/^\+?[0-9]{10,15}$/',
+        ]);
+
+        $customer = Customer::where('phone', $request->customer['phone'])->first();
+
+        if (!$customer) {
+            $customer = Customer::create($request->customer);
+        }
+
+
         $fields = [];
         $fields['user_id'] = auth('sanctum')->id();
         $fields['total_amount'] = 0;
+        $fields['customer_id'] = $customer->id;
         $salesOrder = SalesOrder::create($fields);
         $totalAmount = 0;
         $fields = $request->validate([
@@ -31,10 +46,6 @@ class SalesController extends Controller
             'products.*.product_id' => 'required|integer|exists:products,id',
             'products.*.price' => 'required|numeric|min:0',
             'products.*.quantity' => 'required|integer|min:1',
-
-            'customer' => 'required|array',
-            'customer.name' => 'required|string|max:255',
-            'customer.phone' => 'required|string|regex:/^\+?[0-9]{10,15}$/',
         ]);
 
         foreach ($fields['products'] as $product) {
@@ -63,7 +74,7 @@ class SalesController extends Controller
      */
     public function show(string $id)
     {
-        $salesOrder = SalesOrder::with(['user', 'productSalesOrders.product'])->findOrFail($id);
+        $salesOrder = SalesOrder::with(['user', 'productSalesOrders.product', 'customer'])->findOrFail($id);
         return $salesOrder;
     }
 

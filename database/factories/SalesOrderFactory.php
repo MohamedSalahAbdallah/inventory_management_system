@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Customer;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -20,6 +21,7 @@ class SalesOrderFactory extends Factory
         return [
             'user_id' => User::inRandomOrder()->value('id'),
             'total_amount' => $this->faker->randomFloat(2, 1, 1000),
+            'customer_id' => Customer::inRandomOrder()->value('id')
         ];
     }
 }

@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Adjustment;
 use App\Models\Category;
+use App\Models\Customer;
 use App\Models\InventoryMovement;
 use App\Models\Product;
 use App\Models\ProductPurchaseOrder;
@@ -32,6 +33,7 @@ class DatabaseSeeder extends Seeder
         Category::factory(10)->create();
         Supplier::factory(10)->create();
         Product::factory(100)->create();
+        Customer::factory(10)->create();
         SalesOrder::factory(20)->create();
         PurchaseOrder::factory(20)->create();
         InventoryMovement::factory(25)->create();
