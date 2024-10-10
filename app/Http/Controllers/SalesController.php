@@ -23,9 +23,9 @@ class SalesController extends Controller
     public function store(Request $request)
     {
         $fields = [];
-        if (isset($request->customer) && $request->customer['phone'] && $request->customer['name']) {
+        if (isset($request->customer) && $request->customer['phone']) {
             $request->validate([
-                'customer.name' => 'required|string|max:255',
+                'customer.name' => 'nullable|string|max:255',
                 'customer.phone' => 'required|string|regex:/^\+?[0-9]{10,15}$/',
             ]);
 
