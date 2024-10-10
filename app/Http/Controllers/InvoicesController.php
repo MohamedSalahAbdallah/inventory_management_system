@@ -16,14 +16,16 @@ class InvoicesController extends Controller
     public function salesInvoice($id)
     {
 
-        $saleOrder = SalesOrder::with(['user', 'productSalesOrders.product'])->findOrFail($id);
+        $saleOrder = SalesOrder::with(['user', 'productSalesOrders.product', 'customer'])->findOrFail($id);
 
+        if (!$saleOrder->customer->name) {
+            $saleOrder->customer->name = 'Name not provided';
+        }
         $customer = new Buyer([
-            'name'          => $saleOrder->user->name,
+
+            'name'          => $saleOrder->customer->name,
             'custom_fields' => [
-                'email'         => $saleOrder->user->email,
-                'address'       => $saleOrder->user->address,
-                'phone'         => $saleOrder->user->phone,
+                'phone'         => $saleOrder->customer->phone,
             ]
         ]);
 
