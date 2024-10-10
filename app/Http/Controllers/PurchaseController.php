@@ -31,10 +31,11 @@ class PurchaseController extends Controller
         $totalAmount = 0;
 
 
-        $request->request->add(['user_id' => auth('sanctum')->id()]);
-
-
-        $purchaseOrder = PurchaseOrder::create($request->all());
+        $purchaseOrder = PurchaseOrder::create([
+            'supplier_id' => $request->supplier_id,
+            'user_id' => auth('sanctum')->id(),
+            'total_amount' => $totalAmount
+        ]);
 
 
 
