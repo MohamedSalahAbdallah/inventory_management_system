@@ -16,6 +16,7 @@ class SalesOrder extends Model
     protected $fillable = [
         'user_id',
         'total_amount',
+        'customer_id'
     ];
 
     // Implement the getActivitylogOptions method
@@ -35,5 +36,10 @@ class SalesOrder extends Model
     public function productSalesOrders()
     {
         return $this->hasMany(ProductSalesOrder::class, "sales_order_id");
+    }
+
+    public function customer()
+    {
+        return $this->belongsTo(Customer::class, "customer_id");
     }
 }
