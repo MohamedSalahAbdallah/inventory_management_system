@@ -13,7 +13,7 @@ class SalesOrderController extends Controller
      */
     public function index()
     {
-        return SalesOrder::with(['user', 'productSalesOrders.product'])->get();
+        return SalesOrder::with(['user', 'productSalesOrders.product', 'customer'])->get();
     }
 
     /**
