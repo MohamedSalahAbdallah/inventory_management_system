@@ -82,7 +82,10 @@ class UserController extends Controller
                 $imageName = 'http://127.0.0.1:8000/storage/images/' . $imageName;
 
                 // update the user image
-                $updatedUser['image'] = $imageName;
+                $user->update([
+                    'image' => $imageName
+                ]);
+                return $user;
             }
         } else {
 
