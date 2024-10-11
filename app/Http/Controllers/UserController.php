@@ -114,7 +114,7 @@ class UserController extends Controller
 
             if (isset($request->new_password)) {
                 $request->validate([
-                    "password" => 'required|min:8|confirmed',
+                    "new_password" => 'required|min:8|confirmed',
                 ]);
 
                 $updatedUser['password'] = bcrypt($request->new_password);
