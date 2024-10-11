@@ -82,55 +82,53 @@ class UserController extends Controller
 
             // update the user image
             $updatedUser['image'] = $imageName;
-        } else{
+        } else {
 
-        if (!isset($request->current_password) && !Hash::check($request->password, $user->password)) {
-            return response([
-                'error' => 'Password does not match'
-            ], 401);
+            if (!isset($request->current_password) && !Hash::check($request->password, $user->password)) {
+                return response([
+                    'error' => 'Password does not match'
+                ], 401);
+            }
+
+            $updatedUser = [];
+            if (isset($request->name) && $request->name != $user->name) {
+                $request->validate([
+                    "name" => 'required|string',
+                ]);
+
+                $updatedUser['name'] = $request->name;
+            }
+
+            if (isset($request->email) && $request->email != $user->email) {
+                $request->validate([
+                    "email" => 'required|email|unique:users,email,' . $id,
+                ]);
+
+                $updatedUser['email'] = $request->email;
+            }
+
+            if (isset($request->new_password)) {
+                $request->validate([
+                    "password" => 'required|min:8|confirmed',
+                ]);
+
+                $updatedUser['password'] = bcrypt($request->new_password);
+            }
+
+            if (isset($request->role_id) && $request->role_id != $user->role_id) {
+                $request->validate([
+                    "role_id" => 'required|exists:roles,id'
+                ]);
+
+                $updatedUser['role_id'] = $request->role_id;
+            }
         }
-
-        $updatedUser = [];
-        if (isset($request->name) && $request->name != $user->name) {
-            $request->validate([
-                "name" => 'required|string',
-            ]);
-
-            $updatedUser['name'] = $request->name;
-        }
-
-        if (isset($request->email) && $request->email != $user->email) {
-            $request->validate([
-                "email" => 'required|email|unique:users,email,' . $id,
-            ]);
-
-            $updatedUser['email'] = $request->email;
-        }
-
-        if (isset($request->new_password)) {
-            $request->validate([
-                "password" => 'required|min:8|confirmed',
-            ]);
-
-            $updatedUser['password'] = bcrypt($request->new_password);
-        }
-
-        if (isset($request->role_id) && $request->role_id != $user->role_id) {
-            $request->validate([
-                "role_id" => 'required|exists:roles,id'
-            ]);
-
-            $updatedUser['role_id'] = $request->role_id;
-        }
-
 
         if (count($updatedUser) > 0) {
             $user->update($updatedUser);
         }
 
         return $user;
-
-        }
     }
     /**
      * Remove the specified resource from storage.
