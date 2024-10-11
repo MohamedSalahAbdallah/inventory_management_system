@@ -60,7 +60,7 @@ class ProductController extends Controller
      */
     public function show(string $id)
     {
-        $product = Product::with(['category', 'supplier', 'inventoryMovements', 'productSalesOrders.salesOrder', 'productPurchaseOrders.purchaseOrder', 'adjustments'])->findOrFail($id);
+        $product = Product::with(['category', 'supplier', 'inventoryMovements', 'productSalesOrders.salesOrder.user', 'productPurchaseOrders.purchaseOrder', 'adjustments'])->findOrFail($id);
         return $product;
     }
 
