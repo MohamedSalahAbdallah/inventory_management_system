@@ -95,7 +95,9 @@ class UserController extends Controller
                 ], 401);
             } elseif (!isset($request->current_password)) {
                 return response([
-                    'error' => 'Current password is required'
+                    'error' => [
+                        'current_password' => 'Current password is required'
+                    ]
                 ], 401);
             }
 
