@@ -28,7 +28,7 @@ class AuthController extends Controller
 
 
         return [
-            "user" => $user,
+            "user" => $user->load('role'),
             "token" => $token->plainTextToken
         ];
     }
@@ -41,7 +41,8 @@ class AuthController extends Controller
             "password" => 'required|min:8'
         ]);
 
-        $user = User::where("email", $request->email)->first();
+        $user = User::with(relations: 'role')->where("email", $request->email)->first();
+
         if (!$user || !Hash::check($request->password, $user->password)) {
 
             return response([
@@ -54,7 +55,8 @@ class AuthController extends Controller
                 "user" => $user,
                 "token" => $token->plainTextToken
             ], 200);
-        };
+        }
+        ;
     }
 
     public function logout(Request $request)
