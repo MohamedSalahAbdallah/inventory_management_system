@@ -82,7 +82,9 @@ class UserController extends Controller
 
             // update the user image
             $updatedUser['image'] = $imageName;
-        } elseif (!isset($request->current_password) && !Hash::check($request->password, $user->password)) {
+        } else{
+
+        if (!isset($request->current_password) && !Hash::check($request->password, $user->password)) {
             return response([
                 'error' => 'Password does not match'
             ], 401);
@@ -127,6 +129,8 @@ class UserController extends Controller
         }
 
         return $user;
+
+        }
     }
     /**
      * Remove the specified resource from storage.
