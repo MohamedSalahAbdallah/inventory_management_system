@@ -70,8 +70,7 @@ class UserController extends Controller
         }
 
         $updatedUser = [];
-
-        if ($request->name != $user->name) {
+        if (isset($request->name) && $request->name != $user->name) {
             $request->validate([
                 "name" => 'required|string',
             ]);
@@ -79,7 +78,7 @@ class UserController extends Controller
             $updatedUser['name'] = $request->name;
         }
 
-        if ($request->email != $user->email) {
+        if (isset($request->email) && $request->email != $user->email) {
             $request->validate([
                 "email" => 'required|email|unique:users,email,' . $id,
             ]);
@@ -87,7 +86,7 @@ class UserController extends Controller
             $updatedUser['email'] = $request->email;
         }
 
-        if ($request->new_password) {
+        if (isset($request->new_password)) {
             $request->validate([
                 "password" => 'required|min:8|confirmed',
             ]);
@@ -95,7 +94,7 @@ class UserController extends Controller
             $updatedUser['password'] = bcrypt($request->new_password);
         }
 
-        if ($request->role_id != $user->role_id) {
+        if (isset($request->role_id) && $request->role_id != $user->role_id) {
             $request->validate([
                 "role_id" => 'required|exists:roles,id'
             ]);
