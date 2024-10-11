@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
@@ -62,6 +63,12 @@ class UserController extends Controller
     {
         $user = User::findOrFail($id);
 
+        if (!isset($request->current_password) && !Hash::check($request->password, $user->password)) {
+            return response([
+                'error' => 'Password does not match'
+            ], 401);
+        }
+
         $updatedUser = [];
 
         if ($request->name != $user->name) {
@@ -80,12 +87,12 @@ class UserController extends Controller
             $updatedUser['email'] = $request->email;
         }
 
-        if ($request->password) {
+        if ($request->new_password) {
             $request->validate([
                 "password" => 'required|min:8|confirmed',
             ]);
 
-            $updatedUser['password'] = bcrypt($request->password);
+            $updatedUser['password'] = bcrypt($request->new_password);
         }
 
         if ($request->role_id != $user->role_id) {
@@ -123,7 +130,6 @@ class UserController extends Controller
 
         return $user;
     }
-
     /**
      * Remove the specified resource from storage.
      */
