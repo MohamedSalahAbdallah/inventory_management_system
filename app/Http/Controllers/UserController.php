@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
 {
@@ -26,14 +27,21 @@ class UserController extends Controller
             "name" => 'required|string',
             "email" => 'required|email|unique:users,email',
             "password" => 'required|min:8|confirmed',
-            "role_id" => 'required|exists:roles,id'
+            "role_id" => 'required|exists:roles,id',
+            'image' => 'required|image|mimes:jpeg,jpg,png,gif',
         ]);
+        $image = $request->file('image');
+        $imageName = uniqid() . '_' . $image->getClientOriginalName();
+        $image->storeAs('public/images/', $imageName);
+        $imageName = 'http://127.0.0.1:8000/storage/images/' . $imageName;
+
 
         $user = User::create([
             "name" => $request->name,
             "email" => $request->email,
             "password" => bcrypt($request->password),
-            "role_id" => $request->role_id
+            "role_id" => $request->role_id,
+            'image' => $imageName
         ]);
 
         return User::with(['role'])->findOrFail($user->id);;
@@ -86,6 +94,27 @@ class UserController extends Controller
             ]);
 
             $updatedUser['role_id'] = $request->role_id;
+        }
+
+        if ($request->hasFile('image')) {
+            $request->validate([
+                'image' => 'required|image|mimes:jpeg,jpg,png,gif',
+            ]);
+            // delete the old image
+            if ($user->image != null) {
+                Storage::delete(
+                    'public/images/' . str_replace("http://127.0.0.1:8000/storage/images/", "", "$user->image")
+                );
+            }
+
+            // store the new image
+            $image = $request->file('image');
+            $imageName = uniqid() . '_' . $image->getClientOriginalName();
+            $image->storeAs('public/images/', $imageName);
+            $imageName = 'http://127.0.0.1:8000/storage/images/' . $imageName;
+
+            // update the user image
+            $updatedUser['image'] = $imageName;
         }
 
         if (count($updatedUser) > 0) {
