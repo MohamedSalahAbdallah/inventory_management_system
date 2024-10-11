@@ -54,21 +54,26 @@ class PurchaseOrderController extends Controller
             'status' => 'required|in:pending,processing,shipped,delivered,cancelled,completed',
         ]);
 
-
-
         $purchaseOrder = PurchaseOrder::with(['user', 'supplier', 'productPurchaseOrders.product'])->findOrFail($id);
 
-        if ($purchaseOrder->status == 'delivered') {
-            # code...
+        if ($request->status == 'delivered') {
             foreach ($purchaseOrder->productPurchaseOrders as $item) {
                 $product = Product::findOrFail($item->product->id);
                 $product->quantity += $item->quantity;
                 $product->save();
             }
+        } elseif ($request->status == 'cancelled') {
+            foreach ($purchaseOrder->productPurchaseOrders as $item) {
+                $product = Product::findOrFail($item->product->id);
+                $product->quantity -= $item->quantity;
+                $product->save();
+            }
         }
+
         $purchaseOrder->update([
             'status' => $request->status,
         ]);
+
         $purchaseOrder = PurchaseOrder::with(['user', 'supplier', 'productPurchaseOrders.product'])->findOrFail($id);
         return $purchaseOrder;
     }
