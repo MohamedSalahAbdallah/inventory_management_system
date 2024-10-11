@@ -22,7 +22,7 @@ class WarehouseController extends Controller
     public function store(Request $request)
     {
         $fields = $request->validate([
-            'name' => 'required|string|min:3|unique:warehouses,name',
+            'name' => 'required|string|min:3',
             'location' => 'required|string|min:3',
             'total_capacity' => 'required|integer|min:1'
         ]);
@@ -46,14 +46,7 @@ class WarehouseController extends Controller
     {
         $updatedWarehouse = [];
         if ($request->name != $warehouse->name) {
-            $request->validate([
-                'name' => [
-                    'required',
-                    'string',
-                    'min:3',
-                    Rule::unique('warehouses', 'name')->ignore($warehouse)->whereNull('deleted_at')
-                ]
-            ]);
+            $request->validate(['name' => ['required', 'string', 'min:3']]);
             $updatedWarehouse['name'] = $request->name;
         }
         if ($request->location != $warehouse->location) {
