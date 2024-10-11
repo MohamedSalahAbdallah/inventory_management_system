@@ -91,7 +91,7 @@ class UserController extends Controller
 
             if (isset($request->current_password) && !Hash::check($request->current_password, $user->password)) {
                 return response([
-                    'error' => 'Password does not match'
+                    'error' => 'Your current password is invalid'
                 ], 401);
             } elseif (!isset($request->current_password)) {
                 return response([
