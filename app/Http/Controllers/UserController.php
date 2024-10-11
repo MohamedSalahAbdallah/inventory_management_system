@@ -62,7 +62,7 @@ class UserController extends Controller
     public function update(Request $request, string $id)
     {
         $user = User::findOrFail($id);
-
+        $updatedUser = [];
         if (isset($request->image)) {
             if ($request->hasFile('image')) {
                 $request->validate([
