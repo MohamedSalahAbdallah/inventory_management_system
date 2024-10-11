@@ -63,25 +63,27 @@ class UserController extends Controller
     {
         $user = User::findOrFail($id);
 
-        if ($request->hasFile('image')) {
-            $request->validate([
-                'image' => 'required|image|mimes:jpeg,jpg,png,gif',
-            ]);
-            // delete the old image
-            if ($user->image != null) {
-                Storage::delete(
-                    'public/images/' . str_replace("http://127.0.0.1:8000/storage/images/", "", "$user->image")
-                );
+        if (isset($request->image)) {
+            if ($request->hasFile('image')) {
+                $request->validate([
+                    'image' => 'required|image|mimes:jpeg,jpg,png,gif',
+                ]);
+                // delete the old image
+                if ($user->image != null) {
+                    Storage::delete(
+                        'public/images/' . str_replace("http://127.0.0.1:8000/storage/images/", "", "$user->image")
+                    );
+                }
+
+                // store the new image
+                $image = $request->file('image');
+                $imageName = uniqid() . '_' . $image->getClientOriginalName();
+                $image->storeAs('public/images/', $imageName);
+                $imageName = 'http://127.0.0.1:8000/storage/images/' . $imageName;
+
+                // update the user image
+                $updatedUser['image'] = $imageName;
             }
-
-            // store the new image
-            $image = $request->file('image');
-            $imageName = uniqid() . '_' . $image->getClientOriginalName();
-            $image->storeAs('public/images/', $imageName);
-            $imageName = 'http://127.0.0.1:8000/storage/images/' . $imageName;
-
-            // update the user image
-            $updatedUser['image'] = $imageName;
         } else {
 
             if (!isset($request->current_password) && !Hash::check($request->password, $user->password)) {
