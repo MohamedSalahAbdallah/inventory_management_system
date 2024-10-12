@@ -15,6 +15,7 @@ use App\Http\Controllers\SalesOrderController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ActivityLogController;
+use App\Http\Controllers\ChartsController;
 use App\Http\Controllers\SalesController;
 use App\Http\Controllers\WarehouseController;
 use App\Http\Controllers\WarehouseSectionController;
@@ -67,3 +68,6 @@ Route::apiResource('warehouse-sections', WarehouseSectionController::class)->mid
 Route::apiResource('product-warehouses', ProductWarehouseController::class)->middleware('auth:sanctum');
 
 Route::apiResource('sales', SalesController::class);
+
+
+Route::get('top-selling-products/{length}', [ChartsController::class, 'topSellingProducts']);
