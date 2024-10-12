@@ -12,7 +12,7 @@ class ProductWarehouseController extends Controller
      */
     public function index()
     {
-        return ProductWarehouse::all();
+        return ProductWarehouse::with(['product','WarehouseSection'])->get();
     }
 
     /**
