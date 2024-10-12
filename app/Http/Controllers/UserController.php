@@ -29,12 +29,16 @@ class UserController extends Controller
             "email" => 'required|email|unique:users,email',
             "password" => 'required|min:8|confirmed',
             "role_id" => 'required|exists:roles,id',
-            'image' => 'required|image|mimes:jpeg,jpg,png,gif',
         ]);
-        $image = $request->file('image');
-        $imageName = uniqid() . '_' . $image->getClientOriginalName();
-        $image->storeAs('public/images/', $imageName);
-        $imageName = 'http://127.0.0.1:8000/storage/images/' . $imageName;
+        if ($request->hasFile('image')) {
+            $request->validate([
+                'image' => 'required|image|mimes:jpeg,jpg,png,gif',
+            ]);
+            $image = $request->file('image');
+            $imageName = uniqid() . '_' . $image->getClientOriginalName();
+            $image->storeAs('public/images/', $imageName);
+            $imageName = 'http://127.0.0.1:8000/storage/images/' . $imageName;
+        }
 
 
         $user = User::create([
