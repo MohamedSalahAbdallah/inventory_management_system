@@ -14,7 +14,7 @@ class ActivityLogController extends Controller
     public function index()
     {
         // Get all activity logs
-        $logs = Activity::with('causer')->get(); 
+        $logs = Activity::with('causer')->get();
         return response()->json($logs);
     }
 
@@ -29,7 +29,7 @@ class ActivityLogController extends Controller
         $user = User::findOrFail($userId);
 
         // Get activity logs for the specific user
-        $logs = Activity::where('causer_id', $user->id)->with('causer')->get();
+        $logs = Activity::where('causer_id', $user->id)->with('causer', 'subject')->get();
 
         return response()->json($logs);
     }
