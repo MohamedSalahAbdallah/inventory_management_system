@@ -29,7 +29,9 @@ class ActivityLogController extends Controller
         $user = User::findOrFail($userId);
 
         // Get activity logs for the specific user
-        $logs = Activity::where('causer_id', $user->id)->with('causer', 'subject')->get();
+        $logs = Activity::where('causer_id', $user->id)->with('causer', 'subject')->get()->all();
+
+        
 
         return response()->json($logs);
     }
