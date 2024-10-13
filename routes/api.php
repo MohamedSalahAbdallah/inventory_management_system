@@ -70,4 +70,8 @@ Route::apiResource('product-warehouses', ProductWarehouseController::class)->mid
 Route::apiResource('sales', SalesController::class);
 
 
-Route::get('top-selling-products/{length}', [ChartsController::class, 'topSellingProducts']);
+Route::get('top-selling-products/{length}/{days}', [ChartsController::class, 'topSellingProducts']);
+
+Route::get('salesOf/{length}/{days}', [ChartsController::class, 'SalesPerDays']);
+
+Route::get('purchasesOf/{length}/{days}', [ChartsController::class, 'PurchasesPerDays']);
