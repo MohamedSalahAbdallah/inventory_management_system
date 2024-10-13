@@ -10,8 +10,18 @@ class ChartsController extends Controller
     public function topSellingProducts($length)
     {
 
-        $products = Product::withCount('productSalesOrders')->get();
-        $products = $products->sortByDesc('product_sales_orders_count')->values();
+        $products = Product::with('productSalesOrders')->get();
+        $products->transform(function ($product) use (&$quantity) {
+
+            $quantity = 0;
+            foreach ($product->productSalesOrders as $item) {
+                $quantity += $item->quantity;
+            }
+            $product['total_quantity'] = $quantity;
+            return $product;
+        });
+
+        $products = $products->sortByDesc('total_quantity')->values();
         $products = $products->slice(0, $length);
         return $products;
     }
