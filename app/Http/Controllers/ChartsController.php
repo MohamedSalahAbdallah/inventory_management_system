@@ -17,11 +17,11 @@ class ChartsController extends Controller
             foreach ($product->productSalesOrders as $item) {
                 $quantity += $item->quantity;
             }
-            $product['total_quantity'] = $quantity;
+            $product['total_sales'] = $quantity;
             return $product;
         });
 
-        $products = $products->sortByDesc('total_quantity')->values();
+        $products = $products->sortByDesc(callback: 'total_sales')->values();
         $products = $products->slice(0, $length);
         return $products;
     }
