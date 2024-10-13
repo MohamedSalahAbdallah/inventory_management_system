@@ -72,6 +72,8 @@ Route::apiResource('sales', SalesController::class);
 
 Route::get('top-selling-products/{length}/{days}', [ChartsController::class, 'topSellingProducts']);
 
-Route::get('salesOf/{length}/{days}', [ChartsController::class, 'SalesPerDays']);
+// Route::get('salesOf/{length}/{days}', [ChartsController::class, 'SalesPerDays']);
 
-Route::get('purchasesOf/{length}/{days}', [ChartsController::class, 'PurchasesPerDays']);
+// Route::get('purchasesOf/{length}/{days}', [ChartsController::class, 'PurchasesPerDays']);
+
+Route::get('salesAndPurchases/{length}/{days}', [ChartsController::class, 'salesAndPurchases']);
