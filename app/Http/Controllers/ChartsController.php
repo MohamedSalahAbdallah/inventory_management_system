@@ -18,11 +18,18 @@ class ChartsController extends Controller
                 $quantity += $item->quantity;
             }
             $product['total_sales'] = $quantity;
-            return $product;
+            return [
+                'name' => $product->name,
+                'value' => $quantity
+            ];
+            // return $product;
         });
 
-        $products = $products->sortByDesc(callback: 'total_sales')->values();
+        $products = $products->sortByDesc(callback: 'value')->values();
         $products = $products->slice(0, $length);
+
+
+
         return $products;
     }
 }
