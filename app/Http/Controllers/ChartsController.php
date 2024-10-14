@@ -106,6 +106,5 @@ class ChartsController extends Controller
         $names = $category->pluck('name')->slice(0, $length);
         $values = $category->pluck('products_count')->slice(0, $length);
         return [$names, $values];
-        return $category;
     }
 }
