@@ -26,6 +26,11 @@ class WarehouseSection extends Model
         return $this->belongsTo(Warehouse::class);
     }
 
+    public function productsWarehouse()
+    {
+        return $this->hasMany(ProductWarehouse::class, 'warehouse_section_id');
+    }
+
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()

@@ -61,4 +61,9 @@ class Product extends Model
     {
         return $this->hasMany(Adjustment::class, "product_id");
     }
+
+    public function productWarehouse()
+    {
+        return $this->hasMany(ProductWarehouse::class, "product_id");
+    }
 }

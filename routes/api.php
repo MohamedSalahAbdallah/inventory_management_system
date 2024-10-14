@@ -16,6 +16,7 @@ use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ActivityLogController;
 use App\Http\Controllers\ChartsController;
+use App\Http\Controllers\InventoryController;
 use App\Http\Controllers\SalesController;
 use App\Http\Controllers\WarehouseController;
 use App\Http\Controllers\WarehouseSectionController;
@@ -78,3 +79,16 @@ Route::get('sales-of/{days}', [ChartsController::class, 'SalesPerDays']);
 Route::get('widgets', [ChartsController::class, 'widgets']);
 
 Route::get('products-per-category/{length}', [ChartsController::class, 'productsPerCategory']);
+
+//inventoryController
+
+Route::get('warehouse-index', [InventoryController::class, 'warehouseIndex']);
+
+
+Route::get('warehouse-show/{id}', [InventoryController::class, 'warehouseShow']);
+
+Route::post('warehouse-store', [InventoryController::class, 'warehouseStore']);
+
+Route::put('warehouse-update/{id}', [InventoryController::class, 'warehouseUpdate']);
+
+Route::delete('warehouse-destroy/{id}', [InventoryController::class, 'warehouseDestroy']);
