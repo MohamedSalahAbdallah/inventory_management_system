@@ -5,10 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class Warehouse extends Model
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory, SoftDeletes, LogsActivity;
 
 
     protected $fillable = [
@@ -20,5 +22,18 @@ class Warehouse extends Model
     public function sections()
     {
         return $this->hasMany(WarehouseSection::class);
+    }
+
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->logOnly([
+                'name',
+                'location',
+                'total_capacity'
+            ])
+            ->logOnlyDirty()
+            ->useLogName(logName: 'Warehouse')
+            ->setDescriptionForEvent(fn(string $eventName) => "Warehouse {$eventName}");
     }
 }
