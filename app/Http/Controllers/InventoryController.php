@@ -46,9 +46,10 @@ class InventoryController extends Controller
 
     public function warehouseDestroy($id)
     {
-        return Warehouse::findOrFail($id)->delete();
+        Warehouse::findOrFail($id)->delete();
+        return response()->json(['message' => 'deleted successfully']);
     }
 
     // warehouse section
-    
+
 }
