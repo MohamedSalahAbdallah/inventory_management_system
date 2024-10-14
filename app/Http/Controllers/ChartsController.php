@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
 use App\Models\Product;
 use App\Models\PurchaseOrder;
 use App\Models\SalesOrder;
@@ -67,5 +68,38 @@ class ChartsController extends Controller
         })->values();
 
         return [$dates, $total_amounts];
+    }
+
+    public function widgets()
+    {
+        //products: 'products count {number}',
+        //   sales: 'sales count {number}',
+        //   profit: 'sales amount {number}',
+        //   categories: 'categories count {number}',
+
+
+        $products = Product::count();
+        $sales = SalesOrder::count();
+        $profit = SalesOrder::sum('total_amount');
+        $categories = Category::count();
+
+        return [
+            'products' => [
+                'name' => 'products count',
+                'value' => $products,
+            ],
+            'sales' => [
+                'name' => 'sales count',
+                'value' => $sales,
+            ],
+            'profit' => [
+                'name' => 'sales amount',
+                'value' => $profit,
+            ],
+            'categories' => [
+                'name' => 'categories count',
+                'value' => $categories,
+            ],
+        ];
     }
 }

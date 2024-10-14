@@ -73,3 +73,6 @@ Route::apiResource('sales', SalesController::class);
 Route::get('top-selling-products/{length}/{days}', [ChartsController::class, 'topSellingProducts']);
 
 Route::get('sales-of/{days}', [ChartsController::class, 'SalesPerDays']);
+
+
+Route::get('widgets', [ChartsController::class, 'widgets']);
