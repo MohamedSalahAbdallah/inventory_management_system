@@ -56,7 +56,7 @@ class ChartsController extends Controller
 
         $dates = $salesOrders->pluck('created_at')->unique()->map(function ($date) {
             return $date->format('Y-m-d');
-        });
+        })->values();
 
         $total_amounts = $salesOrders->groupBy('created_at')->map(function ($group) {
             return $group->sum('total_amount');
