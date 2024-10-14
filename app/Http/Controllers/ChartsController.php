@@ -18,10 +18,15 @@ class ChartsController extends Controller
             $quantity = 0;
 
             $filtered = $product->productSalesOrders->filter(function ($item) use ($days) {
-                if ($days == 0) {
-                    return $item->created_at->format('Y-m-d') == now()->format('Y-m-d');
+                if ($days != 'all') {
+                    # code...
+                    if ($days == 0) {
+                        return $item->created_at->format('Y-m-d') == now()->format('Y-m-d');
+                    }
+                    return $item->created_at->diffInDays(now()) <= $days;
                 }
-                return $item->created_at->diffInDays(now()) <= $days;
+
+                return true;
             });
 
             $quantity = $filtered->sum('quantity');
@@ -40,7 +45,6 @@ class ChartsController extends Controller
 
         return [$names, $values];
     }
-
     public function SalesPerDays($days)
     {
         $salesOrders = SalesOrder::get()->filter(function (SalesOrder $order) use ($days) {
