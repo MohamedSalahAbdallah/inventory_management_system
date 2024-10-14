@@ -12,7 +12,7 @@ class InventoryController extends Controller
 
     public function warehouseIndex()
     {
-        return Warehouse::get();
+        return Warehouse::with(['sections.productsWarehouse.product'])->get();
     }
 
     public function warehouseShow($id)
@@ -39,7 +39,7 @@ class InventoryController extends Controller
             'total_capacity' => 'integer|gt:0',
         ]);
 
-        $warehouse = Warehouse::findOrFail($id);
+        $warehouse = Warehouse::with(['sections.productsWarehouse.product'])->findOrFail($id);
         $warehouse->update($request->only(['name', 'location', 'total_capacity']));
         return $warehouse;
     }
