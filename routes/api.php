@@ -76,3 +76,5 @@ Route::get('sales-of/{days}', [ChartsController::class, 'SalesPerDays']);
 
 
 Route::get('widgets', [ChartsController::class, 'widgets']);
+
+Route::get('products-per-category', [ChartsController::class, 'productsPerCategory']);

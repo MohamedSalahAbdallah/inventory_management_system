@@ -72,12 +72,6 @@ class ChartsController extends Controller
 
     public function widgets()
     {
-        //products: 'products count {number}',
-        //   sales: 'sales count {number}',
-        //   profit: 'sales amount {number}',
-        //   categories: 'categories count {number}',
-
-
         $products = Product::count();
         $sales = SalesOrder::count();
         $profit = SalesOrder::sum('total_amount');
@@ -101,5 +95,19 @@ class ChartsController extends Controller
                 'value' => $categories,
             ],
         ];
+    }
+
+    public function productsPerCategory()
+    {
+        $products = Product::with('category')->get();
+
+        $categories = $products->groupBy('category.name')->map(function ($group) {
+            return $group->count();
+        });
+
+        $keys = $categories->keys()->toArray();
+        $values = $categories->values()->toArray();
+
+        return [$keys, $values];
     }
 }
