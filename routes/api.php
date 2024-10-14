@@ -92,3 +92,15 @@ Route::post('warehouse-store', [InventoryController::class, 'warehouseStore']);
 Route::put('warehouse-update/{id}', [InventoryController::class, 'warehouseUpdate']);
 
 Route::delete('warehouse-destroy/{id}', [InventoryController::class, 'warehouseDestroy']);
+
+
+Route::get('warehouseSection-index', [InventoryController::class, 'warehouseSectionIndex']);
+
+
+Route::get('warehouseSection-show/{id}', [InventoryController::class, 'warehouseSectionShow']);
+
+Route::post('warehouseSection-store', [InventoryController::class, 'warehouseSectionStore']);
+
+Route::put('warehouseSection-update/{id}', [InventoryController::class, 'warehouseSectionUpdate']);
+
+Route::delete('warehouseSection-destroy/{id}', [InventoryController::class, 'warehouseSectionDestroy']);
