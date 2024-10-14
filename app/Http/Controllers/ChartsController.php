@@ -41,7 +41,7 @@ class ChartsController extends Controller
         return [$names, $values];
     }
 
-    public function SalesPerDays($length, $days)
+    public function SalesPerDays($days)
     {
         $salesOrders = SalesOrder::get()->filter(function (SalesOrder $order) use ($days) {
             if ($days != "all") {
