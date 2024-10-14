@@ -72,7 +72,7 @@ class ChartsController extends Controller
 
     public function widgets()
     {
-        $products = Product::count();
+        $products = Product::where('quantity', '>', '0');
         $sales = SalesOrder::count();
         $profit = SalesOrder::sum('total_amount');
         $categories = Category::count();
