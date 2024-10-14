@@ -97,17 +97,15 @@ class ChartsController extends Controller
         ];
     }
 
-    public function productsPerCategory()
+    public function productsPerCategory($length)
     {
-        $products = Product::with('category')->get();
+        $category = Category::withCount('products')->get();
+        $category = $category->sortByDesc('products_count');
 
-        $categories = $products->groupBy('category.name')->map(function ($group) {
-            return $group->count();
-        });
 
-        $keys = $categories->keys()->toArray();
-        $values = $categories->values()->toArray();
-
-        return [$keys, $values];
+        $names = $category->pluck('name')->slice(0, $length);
+        $values = $category->pluck('products_count')->slice(0, $length);
+        return [$names, $values];
+        return $category;
     }
 }
