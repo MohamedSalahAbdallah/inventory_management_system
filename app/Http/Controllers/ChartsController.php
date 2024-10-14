@@ -64,16 +64,4 @@ class ChartsController extends Controller
 
         return [$dates, $total_amounts];
     }
-    // public function PurchasesPerDays($length, $days)
-    // {
-    //     $purchaseOrders = PurchaseOrder::get();
-    //     $purchaseOrders->transform(function (PurchaseOrder $order) use ($days) {
-    //         if ($order->created_at->diffInDays(now()) <= $days) {
-    //             return $order;
-    //         }
-    //     });
-    //     $purchaseOrders = $purchaseOrders->sortByDesc(callback: 'total_amount')->values();
-    //     $purchaseOrders = $purchaseOrders->slice(0, $length);
-    //     return $purchaseOrders;
-    // }
 }
