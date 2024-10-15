@@ -111,7 +111,7 @@ class InventoryController extends Controller
         $totalCapacity = $sections->sum('capacity') + $request->capacity;
 
         if ($totalCapacity > $warehouse->total_capacity) {
-            return response()->json(['message' => 'The capacity of the all the sections is not more than the available capacity in the warehouse'], 422);
+            return response()->json(['message' => 'Section capacity exceeds the available warehouse capacity'], 422);
         }
 
         $section->update($request->all());
