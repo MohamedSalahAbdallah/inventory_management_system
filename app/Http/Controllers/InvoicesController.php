@@ -21,7 +21,7 @@ class InvoicesController extends Controller
         if (isset($saleOrder->customer)) {
 
             if (!$saleOrder->customer->name) {
-                $saleOrder->customer->name = 'Name not provided';
+                $saleOrder->customer->name = 'N/A';
             }
             $customer = new Buyer([
 
@@ -33,9 +33,9 @@ class InvoicesController extends Controller
         } else {
             $customer = new Buyer([
 
-                'name'          => 'Name not provided',
+                'name'          => 'N/A',
                 'custom_fields' => [
-                    'phone'         => 'Phone not provided',
+                    'phone'         => 'N/A',
                 ]
             ]);
         }
