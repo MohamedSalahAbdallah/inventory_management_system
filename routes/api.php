@@ -104,3 +104,10 @@ Route::post('warehouseSection-store', [InventoryController::class, 'warehouseSec
 Route::put('warehouseSection-update/{id}', [InventoryController::class, 'warehouseSectionUpdate']);
 
 Route::delete('warehouseSection-destroy/{id}', [InventoryController::class, 'warehouseSectionDestroy']);
+
+
+Route::get('productWarehouse-index', [InventoryController::class, 'productWarehouseIndex']);
+Route::get('productWarehouse-show/{id}', [InventoryController::class, 'productWarehouseShow']);
+Route::post('productWarehouse-store', [InventoryController::class, 'productWarehouseStore']);
+Route::put('productWarehouse-update/{id}', [InventoryController::class, 'productWarehouseUpdate']);
+Route::delete('productWarehouse-destroy/{id}', [InventoryController::class, 'productWarehouseDestroy']);

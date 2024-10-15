@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ProductWarehouse;
 use App\Models\Warehouse;
 use App\Models\WarehouseSection;
 use Illuminate\Http\Request;
@@ -99,6 +100,50 @@ class InventoryController extends Controller
     public function warehouseSectionDestroy($id)
     {
         WarehouseSection::findOrFail($id)->delete();
+        return response()->json(['message' => 'deleted successfully']);
+    }
+
+
+
+    // product-warehouse
+
+    public function productWarehouseIndex()
+    {
+        return ProductWarehouse::with(['product', 'warehouseSection'])->get();
+    }
+
+    public function productWarehouseShow($id)
+    {
+        return ProductWarehouse::with(['product', 'warehouseSection'])->findOrFail($id);
+    }
+
+    public function productWarehouseStore(Request $request)
+    {
+        $request->validate([
+            'product_id' => 'required|integer|exists:products,id',
+            'warehouse_section_id' => 'required|integer|exists:warehouse_sections,id',
+            'quantity' => 'required|integer|min:1',
+        ]);
+
+        return ProductWarehouse::create($request->only(['product_id', 'warehouse_section_id', 'quantity']));
+    }
+
+    public function productWarehouseUpdate(Request $request, $id)
+    {
+        $request->validate([
+            'product_id' => 'integer|exists:products,id',
+            'warehouse_section_id' => 'integer|exists:warehouse_sections,id',
+            'quantity' => 'integer|min:1',
+        ]);
+
+        $productWarehouse = ProductWarehouse::with(['product', 'warehouseSection'])->findOrFail($id);
+        $productWarehouse->update($request->all());
+        return $productWarehouse;
+    }
+
+    public function productWarehouseDestroy($id)
+    {
+        ProductWarehouse::findOrFail($id)->delete();
         return response()->json(['message' => 'deleted successfully']);
     }
 }
