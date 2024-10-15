@@ -73,6 +73,16 @@ class InventoryController extends Controller
             'section_type' => 'required|string|max:255|in:refrigerator,shelves,other',
             'capacity' => 'required|integer|gt:0'
         ]);
+
+        $warehouse = Warehouse::findOrFail($request->warehouse_id);
+        $sections = $warehouse->sections;
+
+        $totalCapacity = $sections->sum('capacity') + $request->capacity;
+
+        if ($totalCapacity > $warehouse->total_capacity) {
+            return response()->json(['message' => 'The capacity of the all the sections is not more than the avialble capacity in the warehouse'], 422);
+        }
+
         $empty_slots = $request->capacity;
         $reserved_slots = 0;
 
@@ -93,6 +103,16 @@ class InventoryController extends Controller
         ]);
 
         $section = WarehouseSection::with(['productsWarehouse.product'])->findOrFail($id);
+
+        $warehouse = Warehouse::findOrFail($section->warehouse_id);
+        $sections = $warehouse->sections->where('id', '!=', $section->id);
+
+        $totalCapacity = $sections->sum('capacity') + $request->capacity;
+
+        if ($totalCapacity > $warehouse->total_capacity) {
+            return response()->json(['message' => 'The capacity of the all the sections is not more than the avialble capacity in the warehouse'], 422);
+        }
+
         $section->update($request->all());
         return $section;
     }
