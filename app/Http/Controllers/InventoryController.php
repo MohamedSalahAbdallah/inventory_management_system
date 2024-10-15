@@ -77,10 +77,11 @@ class InventoryController extends Controller
         $warehouse = Warehouse::findOrFail($request->warehouse_id);
         $sections = $warehouse->sections;
 
+
         $totalCapacity = $sections->sum('capacity') + $request->capacity;
 
         if ($totalCapacity > $warehouse->total_capacity) {
-            return response()->json(['message' => 'The capacity of the all the sections is not more than the avialble capacity in the warehouse'], 422);
+            return response()->json(['message' => 'The capacity exceeds the available capacity'], 422);
         }
 
         $empty_slots = $request->capacity;
