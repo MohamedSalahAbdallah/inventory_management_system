@@ -69,7 +69,7 @@ class InventoryController extends Controller
 
     public function warehouseSectionShow($id)
     {
-        return WarehouseSection::with(['sections.productsWarehouse.product' => function ($query) {
+        return WarehouseSection::with(['productsWarehouse.product' => function ($query) {
             $query->with('supplier', 'category');
         }])->findOrFail($id);
     }
