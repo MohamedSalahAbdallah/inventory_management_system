@@ -43,6 +43,9 @@ class PurchaseOrder extends Model
     {
         return $this->belongsTo(Supplier::class, "supplier_id");
     }
+    protected $cascadeDeletes = [
+        'productPurchaseOrders',
+    ];
     public function productPurchaseOrders(): HasMany
     {
         return $this->hasMany(ProductPurchaseOrder::class, "purchase_order_id");

@@ -27,6 +27,10 @@ class WarehouseSection extends Model
         return $this->belongsTo(Warehouse::class);
     }
 
+    protected $cascadeDeletes = [
+        'productsWarehouse'
+    ];
+
     public function productsWarehouse()
     {
         return $this->hasMany(ProductWarehouse::class, 'warehouse_section_id');

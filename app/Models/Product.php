@@ -44,6 +44,14 @@ class Product extends Model
     {
         return $this->belongsTo(Supplier::class, "supplier_id");
     }
+    protected $cascadeDeletes = [
+        'inventoryMovements',
+        'productSalesOrders',
+        'productPurchaseOrders',
+        'adjustments',
+        'productWarehouse'
+    ];
+
     public function inventoryMovements(): HasMany
     {
         return $this->hasMany(InventoryMovement::class, "product_id");

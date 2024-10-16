@@ -26,6 +26,7 @@ class Customer extends Model
             ->useLogName('Customer')
             ->setDescriptionForEvent(fn(string $eventName) => "Customer {$eventName}");
     }
+    protected $cascadeDeletes = ['salesOrders'];
 
     public function salesOrders()
     {

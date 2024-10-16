@@ -28,6 +28,9 @@ class Role extends Model
             ->setDescriptionForEvent(fn(string $eventName) => "Role {$eventName}");
     }
 
+    protected $cascadeDeletes = [
+        'users'
+    ];
 
     public function users(): HasMany
     {

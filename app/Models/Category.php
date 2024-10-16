@@ -26,6 +26,7 @@ class Category extends Model
             ->useLogName('Category')
             ->setDescriptionForEvent(fn(string $eventName) => "Category {$eventName}");
     }
+    protected $cascadeDeletes = ['products'];
 
     public function products()
     {

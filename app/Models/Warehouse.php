@@ -20,6 +20,10 @@ class Warehouse extends Model
         'total_capacity'
     ];
 
+
+    protected $cascadeDeletes = [
+        'sections'
+    ];
     public function sections()
     {
         return $this->hasMany(WarehouseSection::class);

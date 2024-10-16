@@ -75,6 +75,11 @@ class User extends Authenticatable
         return $this->belongsTo(Role::class, "role_id");
     }
 
+    protected $cascadeDeletes = [
+        'salesOrders',
+        'purchaseOrders',
+        'adjustments',
+    ];
     public function salesOrders(): HasMany
     {
         return $this->hasMany(SalesOrder::class, "user_id");

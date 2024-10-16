@@ -32,6 +32,11 @@ class Supplier extends Model
             ->setDescriptionForEvent(fn(string $eventName) => "Supplier {$eventName}");
     }
 
+    protected $cascadeDeletes = [
+        'products',
+        'purchaseOrders'
+    ];
+
     public function products(): HasMany
     {
         return $this->hasMany(Product::class, "supplier_id");

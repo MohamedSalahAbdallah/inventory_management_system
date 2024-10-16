@@ -34,6 +34,10 @@ class SalesOrder extends Model
     {
         return $this->belongsTo(User::class, "user_id");
     }
+
+    protected $cascadeDeletes = [
+        'productSalesOrders'
+    ];
     public function productSalesOrders()
     {
         return $this->hasMany(ProductSalesOrder::class, "sales_order_id");
