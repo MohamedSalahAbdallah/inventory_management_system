@@ -42,6 +42,13 @@ class InventoryController extends Controller
         ]);
 
         $warehouse = Warehouse::with(['sections.productsWarehouse.product'])->findOrFail($id);
+
+        $totalSectionCapacity = $warehouse->sections->sum('capacity');
+
+        if ($request->total_capacity < $totalSectionCapacity) {
+            return response()->json(['message' => 'The new capacity is not enough to hold the current sections'], 422);
+        }
+
         $warehouse->update($request->only(['name', 'location', 'total_capacity']));
         return $warehouse;
     }
