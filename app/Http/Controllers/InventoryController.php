@@ -41,7 +41,9 @@ class InventoryController extends Controller
             'total_capacity' => 'integer|gt:0',
         ]);
 
-        $warehouse = Warehouse::with(['sections.productsWarehouse.product'])->findOrFail($id);
+        $warehouse = Warehouse::with(['sections.productsWarehouse.product' => function ($query) {
+            $query->with('supplier', 'category');
+        }])->findOrFail($id);
 
         $totalSectionCapacity = $warehouse->sections->sum('capacity');
 
