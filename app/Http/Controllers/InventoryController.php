@@ -114,6 +114,10 @@ class InventoryController extends Controller
             return response()->json(['message' => 'Section capacity exceeds the available warehouse capacity'], 422);
         }
 
+        if ($request->capacity < $section->empty_slots + $section->reserved_slots) {
+            return response()->json(['message' => 'The new capacity is not enough to hold the current products'], 422);
+        }
+
         $section->update($request->all());
         return $section;
     }
