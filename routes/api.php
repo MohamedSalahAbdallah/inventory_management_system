@@ -68,46 +68,46 @@ Route::apiResource('warehouse-sections', WarehouseSectionController::class)->mid
 
 Route::apiResource('product-warehouses', ProductWarehouseController::class)->middleware('auth:sanctum');
 
-Route::apiResource('sales', SalesController::class);
+Route::apiResource('sales', SalesController::class)->middleware('auth:sanctum');
 
 
-Route::get('top-selling-products/{length}/{days}', [ChartsController::class, 'topSellingProducts']);
+Route::get('top-selling-products/{length}/{days}', [ChartsController::class, 'topSellingProducts'])->middleware('auth:sanctum');
 
-Route::get('sales-of/{days}', [ChartsController::class, 'SalesPerDays']);
+Route::get('sales-of/{days}', [ChartsController::class, 'SalesPerDays'])->middleware('auth:sanctum');
 
 
-Route::get('widgets', [ChartsController::class, 'widgets']);
+Route::get('widgets', [ChartsController::class, 'widgets'])->middleware('auth:sanctum');
 
-Route::get('products-per-category/{length}', [ChartsController::class, 'productsPerCategory']);
+Route::get('products-per-category/{length}', [ChartsController::class, 'productsPerCategory'])->middleware('auth:sanctum');
 
 //inventoryController
 
-Route::get('warehouse-index', [InventoryController::class, 'warehouseIndex']);
+Route::get('warehouse-index', [InventoryController::class, 'warehouseIndex'])->middleware('auth:sanctum');
 
 
-Route::get('warehouse-show/{id}', [InventoryController::class, 'warehouseShow']);
+Route::get('warehouse-show/{id}', [InventoryController::class, 'warehouseShow'])->middleware('auth:sanctum');
 
-Route::post('warehouse-store', [InventoryController::class, 'warehouseStore']);
+Route::post('warehouse-store', [InventoryController::class, 'warehouseStore'])->middleware('auth:sanctum');
 
-Route::put('warehouse-update/{id}', [InventoryController::class, 'warehouseUpdate']);
+Route::put('warehouse-update/{id}', [InventoryController::class, 'warehouseUpdate'])->middleware('auth:sanctum');
 
-Route::delete('warehouse-destroy/{id}', [InventoryController::class, 'warehouseDestroy']);
-
-
-Route::get('warehouseSection-index', [InventoryController::class, 'warehouseSectionIndex']);
+Route::delete('warehouse-destroy/{id}', [InventoryController::class, 'warehouseDestroy'])->middleware('auth:sanctum');
 
 
-Route::get('warehouseSection-show/{id}', [InventoryController::class, 'warehouseSectionShow']);
-
-Route::post('warehouseSection-store', [InventoryController::class, 'warehouseSectionStore']);
-
-Route::put('warehouseSection-update/{id}', [InventoryController::class, 'warehouseSectionUpdate']);
-
-Route::delete('warehouseSection-destroy/{id}', [InventoryController::class, 'warehouseSectionDestroy']);
+Route::get('warehouseSection-index', [InventoryController::class, 'warehouseSectionIndex'])->middleware('auth:sanctum');
 
 
-Route::get('productWarehouse-index', [InventoryController::class, 'productWarehouseIndex']);
-Route::get('productWarehouse-show/{id}', [InventoryController::class, 'productWarehouseShow']);
-Route::post('productWarehouse-store', [InventoryController::class, 'productWarehouseStore']);
-Route::put('productWarehouse-update/{id}', [InventoryController::class, 'productWarehouseUpdate']);
-Route::delete('productWarehouse-destroy/{id}', [InventoryController::class, 'productWarehouseDestroy']);
+Route::get('warehouseSection-show/{id}', [InventoryController::class, 'warehouseSectionShow'])->middleware('auth:sanctum');
+
+Route::post('warehouseSection-store', [InventoryController::class, 'warehouseSectionStore'])->middleware('auth:sanctum');
+
+Route::put('warehouseSection-update/{id}', [InventoryController::class, 'warehouseSectionUpdate'])->middleware('auth:sanctum');
+
+Route::delete('warehouseSection-destroy/{id}', [InventoryController::class, 'warehouseSectionDestroy'])->middleware('auth:sanctum');
+
+
+Route::get('productWarehouse-index', [InventoryController::class, 'productWarehouseIndex'])->middleware('auth:sanctum');
+Route::get('productWarehouse-show/{id}', [InventoryController::class, 'productWarehouseShow'])->middleware('auth:sanctum');
+Route::post('productWarehouse-store', [InventoryController::class, 'productWarehouseStore'])->middleware('auth:sanctum');
+Route::put('productWarehouse-update/{id}', [InventoryController::class, 'productWarehouseUpdate'])->middleware('auth:sanctum');
+Route::delete('productWarehouse-destroy/{id}', [InventoryController::class, 'productWarehouseDestroy'])->middleware('auth:sanctum');
