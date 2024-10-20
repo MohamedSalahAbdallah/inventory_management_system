@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Product;
 use App\Models\ProductPurchaseOrder;
+use App\Models\ProductWarehouse;
 use App\Models\PurchaseOrder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -26,13 +27,15 @@ class PurchaseController extends Controller
     {
         //
         $request->validate([
-            'supplier_id' => 'required|numeric|exists:suppliers,id'
+            'supplier_id' => 'required|numeric|exists:suppliers,id',
+            'warehouse_section_id' => 'numeric|required',
         ]);
 
         $totalAmount = 0;
 
         try {
             return DB::transaction(function () use ($request, &$totalAmount) {
+
 
                 $purchaseOrder = PurchaseOrder::create([
                     'supplier_id' => $request->supplier_id,
@@ -56,6 +59,24 @@ class PurchaseController extends Controller
                         'quantity' => $product['quantity'],
                     ]);
                     $totalAmount += $product['price'] * $product['quantity'];
+
+                    $productWarehouse = ProductWarehouse::firstOrCreate([
+                        'product_id' => $product['product_id'],
+                        'warehouse_section_id' => $request->warehouse_section_id,
+                    ], [
+                        'quantity' => 0,
+                        'empty_slots' => 0,
+                        'reserved_slots' => 0,
+                    ]);
+
+                    if ($productWarehouse->empty_slots >= $product['quantity']) {
+                        $productWarehouse->update([
+                            'empty_slots' => $productWarehouse->empty_slots - $product['quantity'],
+                            'reserved_slots' => $productWarehouse->reserved_slots + $product['quantity'],
+                        ]);
+                    } else {
+                        return response()->json(['message' => 'There are not enough empty slots for the product ' . $product['product_id'] . ' in the warehouse section ' . $request->warehouse_section_id], 422);
+                    }
                 }
 
                 $purchaseOrder->update([
@@ -68,7 +89,6 @@ class PurchaseController extends Controller
             return response()->json(['message' => $e->getMessage()], 422);
         }
     }
-
     /**
      * Display the specified resource.
      */
