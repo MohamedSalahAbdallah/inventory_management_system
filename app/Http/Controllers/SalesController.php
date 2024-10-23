@@ -27,9 +27,6 @@ class SalesController extends Controller
 
         try {
             return DB::transaction(function () use ($request) {
-                $request->validate([
-                    'warehouse_section_id' => 'numeric|required|exists:warehouse_sections,id'
-                ]);
                 $fields = [];
                 if (isset($request->customer) && $request->customer['phone']) {
                     $request->validate([
@@ -54,12 +51,12 @@ class SalesController extends Controller
                     'products.*.product_id' => 'required|integer|exists:products,id',
                     'products.*.price' => 'required|numeric|min:0',
                     'products.*.quantity' => 'required|integer|min:1',
-
+                    'products.*.warehouse_section_id' => 'required|integer|exists:warehouse_sections,id',
                 ]);
 
                 foreach ($fields['products'] as $product) {
                     $productInstance = Product::with(['productWarehouse'])->findOrFail($product['product_id']);
-                    $productWarehouse = $productInstance->productWarehouse()->where('warehouse_section_id', $request->warehouse_section_id);
+                    $productWarehouse = $productInstance->productWarehouse()->where('warehouse_section_id', $product['warehouse_section_id']);
                     $availableQuantity = $productWarehouse->quantity;
                     $requestedQuantity = $product['quantity'];
                     if ($requestedQuantity > $availableQuantity) {
