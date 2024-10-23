@@ -73,6 +73,8 @@ class SalesController extends Controller
                     $totalAmount += $product['price'] * $product['quantity'];
                     $productInstance->decrement('quantity', $product['quantity']);
                     $productWarehouse->decrement('quantity', $product['quantity']);
+                    $productWarehouse->warehouseSection->increment('empty_slots', $product['quantity']);
+                    $productWarehouse->warehouseSection->decrement('reserved_slots', $product['quantity']);
                 }
 
                 $salesOrder->total_amount = $totalAmount;
