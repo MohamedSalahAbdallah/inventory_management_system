@@ -58,6 +58,7 @@ class PurchaseController extends Controller
                         'product_id' => $product['product_id'],
                         'price' => $product['price'],
                         'quantity' => $product['quantity'],
+                        'warehouse_section_id' => $request->warehouse_section_id
                     ]);
                     $totalAmount += $product['price'] * $product['quantity'];
 

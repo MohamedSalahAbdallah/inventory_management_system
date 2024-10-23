@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use App\Models\Product;
 use App\Models\PurchaseOrder;
+use App\Models\WarehouseSection;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -23,6 +24,7 @@ class ProductPurchaseOrderFactory extends Factory
             'price' => $this->faker->randomFloat(2, 1, 100),
             'product_id' => Product::inRandomOrder()->value('id'),
             'purchase_order_id' => PurchaseOrder::inRandomOrder()->value('id'),
+            'warehouse_section_id' => WarehouseSection::inRandomOrder()->value('id')
         ];
     }
 }

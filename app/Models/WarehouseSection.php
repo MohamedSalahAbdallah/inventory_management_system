@@ -51,4 +51,9 @@ class WarehouseSection extends Model
             ->useLogName(logName: 'Warehouse')
             ->setDescriptionForEvent(fn(string $eventName) => "Warehouse {$eventName}");
     }
+
+    public function productPurchaseOrder()
+    {
+        return $this->hasMany(ProductPurchaseOrder::class, 'warehouse_section_id');
+    }
 }

@@ -23,6 +23,7 @@ class ProductSalesOrderFactory extends Factory
             'price' => $this->faker->randomFloat(2, 1, 100),
             'product_id' => Product::inRandomOrder()->value('id'),
             'sales_order_id' => SalesOrder::inRandomOrder()->value('id'),
+            'created_at' => $this->faker->dateTimeBetween('-1 year', 'now'),
         ];
     }
 }

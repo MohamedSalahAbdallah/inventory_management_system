@@ -52,7 +52,6 @@ class PurchaseOrderController extends Controller
         $request->validate([
 
             'status' => 'required|in:pending,processing,shipped,delivered,cancelled,completed',
-            'warehouse_section_id' => 'numeric|required|exists:warehouse_sections,id'
         ]);
 
         $purchaseOrder = PurchaseOrder::with(['user', 'supplier', 'productPurchaseOrders.product'])->findOrFail($id);
@@ -63,7 +62,7 @@ class PurchaseOrderController extends Controller
                 $product->quantity -= $item->quantity;
                 $product->save();
 
-                $productWarehouse = $product->productWarehouse()->where('warehouse_section_id', $request->warehouse_section_id)->first();
+                $productWarehouse = $product->productWarehouse()->where('warehouse_section_id', $item->warehouse_section_id)->first();
                 if ($productWarehouse) {
                     $productWarehouse->quantity -= $item->quantity;
                     $productWarehouse->save();
@@ -75,7 +74,7 @@ class PurchaseOrderController extends Controller
                 $product->quantity += $item->quantity;
                 $product->save();
 
-                $productWarehouse = $product->productWarehouse()->where('warehouse_section_id', $request->warehouse_section_id)->first();
+                $productWarehouse = $product->productWarehouse()->where('warehouse_section_id', $item->warehouse_section_id)->first();
                 if ($productWarehouse) {
                     $productWarehouse->quantity += $item->quantity;
                     $productWarehouse->save();

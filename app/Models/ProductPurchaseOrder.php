@@ -19,6 +19,7 @@ class ProductPurchaseOrder extends Model
         'price',
         'product_id',
         'purchase_order_id',
+        'warehouse_section_id',
     ];
 
     // Implement the getActivitylogOptions method
@@ -38,5 +39,10 @@ class ProductPurchaseOrder extends Model
     public function purchaseOrder(): BelongsTo
     {
         return $this->belongsTo(PurchaseOrder::class, "purchase_order_id");
+    }
+
+    public function warehouseSection()
+    {
+        return $this->belongsTo(WarehouseSection::class, 'warehouse_section_id');
     }
 }
