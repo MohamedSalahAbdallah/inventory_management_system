@@ -56,7 +56,7 @@ class SalesController extends Controller
 
                 foreach ($fields['products'] as $product) {
                     $productInstance = Product::with(['productWarehouse'])->findOrFail($product['product_id']);
-                    $productWarehouse = $productInstance->productWarehouse()->where('warehouse_section_id', $product['warehouse_section_id']);
+                    $productWarehouse = $productInstance->productWarehouse->where('warehouse_section_id', $product['warehouse_section_id'])->first();
                     $availableQuantity = $productWarehouse->quantity;
                     $requestedQuantity = $product['quantity'];
                     if ($requestedQuantity > $availableQuantity) {
