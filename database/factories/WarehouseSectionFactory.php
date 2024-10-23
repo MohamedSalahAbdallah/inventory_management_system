@@ -23,7 +23,7 @@ class WarehouseSectionFactory extends Factory
 
         return [
             'warehouse_id' => Warehouse::inRandomOrder()->value('id'),
-            'section_name'=> $this->faker->word(),
+            'section_name' => $this->faker->word(),
             'section_type' => $this->faker->randomElement(['refrigerator', 'shelves', 'other']),
             'capacity' => $capacity,
             'empty_slots' => $emptySlots,

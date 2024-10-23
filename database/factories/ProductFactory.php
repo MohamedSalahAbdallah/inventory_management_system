@@ -19,15 +19,15 @@ class ProductFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => $this->faker->sentence(3),
-            'description' => $this->faker->paragraph(2),
-            'sku' => $this->faker->randomNumber(6),
+            'name' => $this->faker->words(3, true),
+            'description' => $this->faker->text(200),
+            'sku' => $this->faker->unique()->numerify('SKU-######'),
             'price' => $this->faker->randomFloat(2, 1, 100),
             'quantity' => $this->faker->numberBetween(0, 1000),
             'image' => 'https://picsum.photos/800',
 
-            'category_id' => Category::inRandomOrder()->value('id'),
-            'supplier_id' => Supplier::inRandomOrder()->value('id'),
+            'category_id' => Category::query()->inRandomOrder()->value('id'),
+            'supplier_id' => Supplier::query()->inRandomOrder()->value('id'),
         ];
     }
 }
