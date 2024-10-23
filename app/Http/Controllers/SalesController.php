@@ -27,6 +27,9 @@ class SalesController extends Controller
 
         try {
             return DB::transaction(function () use ($request) {
+                $request->validate([
+                    'warehouse_section_id' => 'numeric|required|exists:warehouse_sections,id'
+                ]);
                 $fields = [];
                 if (isset($request->customer) && $request->customer['phone']) {
                     $request->validate([
@@ -56,7 +59,8 @@ class SalesController extends Controller
 
                 foreach ($fields['products'] as $product) {
                     $productInstance = Product::with(['productWarehouse'])->findOrFail($product['product_id']);
-                    $availableQuantity = $productInstance->productWarehouse->quantity;
+                    $productWarehouse = $productInstance->productWarehouse()->where('warehouse_section_id', $request->warehouse_section_id);
+                    $availableQuantity = $productWarehouse->quantity;
                     $requestedQuantity = $product['quantity'];
                     if ($requestedQuantity > $availableQuantity) {
                         throw new \Exception("The requested quantity for product {$productInstance->name} is more than the available quantity '{$availableQuantity}'");
@@ -70,7 +74,8 @@ class SalesController extends Controller
                     ]);
 
                     $totalAmount += $product['price'] * $product['quantity'];
-                    $productInstance->productWarehouse->decrement('quantity', $product['quantity']);
+                    $productInstance->decrement('quantity', $product['quantity']);
+                    $productWarehouse->decrement('quantity', $product['quantity']);
                 }
 
                 $salesOrder->total_amount = $totalAmount;
