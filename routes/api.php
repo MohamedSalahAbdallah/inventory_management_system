@@ -52,17 +52,17 @@ Route::apiResource("purchase-orders", PurchaseOrderController::class)->middlewar
 Route::apiResource('product-purchase-orders', ProductPurchaseOrderController::class)->middleware('auth:sanctum');
 
 
-route::get('salesInvoice/{id}', [InvoicesController::class, 'salesInvoice']);
+route::get('salesInvoice/{id}', [InvoicesController::class, 'salesInvoice'])->middleware('auth:sanctum');
 
 
-route::get('purchaseInvoice/{id}', [InvoicesController::class, 'purchaseInvoice']);
+route::get('purchaseInvoice/{id}', [InvoicesController::class, 'purchaseInvoice'])->middleware('auth:sanctum');
 
-Route::apiResource('purchase', PurchaseController::class);
+Route::apiResource('purchase', PurchaseController::class)->middleware('auth:sanctum');
 Route::middleware('auth:sanctum')->group(function () {
-    Route::get('/logs', [ActivityLogController::class, 'index']);
-    Route::get('/logs/user/{userId}', [ActivityLogController::class, 'getUserLogs']);
+    Route::get('/logs', [ActivityLogController::class, 'index'])->middleware('auth:sanctum');
+    Route::get('/logs/user/{userId}', [ActivityLogController::class, 'getUserLogs'])->middleware('auth:sanctum');
 });
-Route::apiResource('warehouses', WarehouseController::class)->middleware('auth:sanctum');
+Route::apiResource('warehouses', WarehouseController::class)->middleware('auth:sanctum')->middleware('auth:sanctum');
 
 Route::apiResource('warehouse-sections', WarehouseSectionController::class)->middleware('auth:sanctum');
 

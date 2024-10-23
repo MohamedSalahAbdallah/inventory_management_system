@@ -52,21 +52,34 @@ class PurchaseOrderController extends Controller
         $request->validate([
 
             'status' => 'required|in:pending,processing,shipped,delivered,cancelled,completed',
+            'warehouse_section_id' => 'numeric|required|exists:warehouse_sections,id'
         ]);
 
         $purchaseOrder = PurchaseOrder::with(['user', 'supplier', 'productPurchaseOrders.product'])->findOrFail($id);
 
         if ($purchaseOrder->status == 'delivered' && $request->status == 'cancelled') {
             foreach ($purchaseOrder->productPurchaseOrders as $item) {
-                $product = Product::findOrFail($item->product->id);
+                $product = Product::with(['productWarehouse'])->findOrFail($item->product->id);
                 $product->quantity -= $item->quantity;
                 $product->save();
+
+                $productWarehouse = $product->productWarehouse()->where('warehouse_section_id', $request->warehouse_section_id)->first();
+                if ($productWarehouse) {
+                    $productWarehouse->quantity -= $item->quantity;
+                    $productWarehouse->save();
+                }
             }
         } elseif ($request->status == 'delivered') {
             foreach ($purchaseOrder->productPurchaseOrders as $item) {
-                $product = Product::findOrFail($item->product->id);
+                $product = Product::with(['productWarehouse'])->findOrFail($item->product->id);
                 $product->quantity += $item->quantity;
                 $product->save();
+
+                $productWarehouse = $product->productWarehouse()->where('warehouse_section_id', $request->warehouse_section_id)->first();
+                if ($productWarehouse) {
+                    $productWarehouse->quantity += $item->quantity;
+                    $productWarehouse->save();
+                }
             }
         }
 

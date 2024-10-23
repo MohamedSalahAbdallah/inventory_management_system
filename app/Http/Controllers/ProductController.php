@@ -27,7 +27,6 @@ class ProductController extends Controller
             'description' => 'required|string|min:1',
             'sku' => 'required|numeric|min:1|unique:products',
             'price' => 'required|numeric|min:1',
-            'quantity' => 'required|numeric|min:1',
             'category_id' => 'required|exists:categories,id',
             'supplier_id' => 'required|exists:suppliers,id',
             'image' => 'required|image|mimes:jpeg,jpg,png,gif',
@@ -47,7 +46,6 @@ class ProductController extends Controller
             'description' => $request->description,
             'sku' => $request->sku,
             'price' => $request->price,
-            'quantity' => $request->quantity,
             'category_id' => $request->category_id,
             'supplier_id' => $request->supplier_id,
             'image' => $imageName,
@@ -75,7 +73,6 @@ class ProductController extends Controller
             'description' => 'required|string|min:1',
             'sku' => 'required|numeric|min:1|unique:products,sku,' . $id,
             'price' => 'required|numeric|min:1',
-            'quantity' => 'required|numeric|min:1',
             'category_id' => 'required|exists:categories,id',
             'supplier_id' => 'required|exists:suppliers,id',
 
@@ -89,7 +86,6 @@ class ProductController extends Controller
         $product->description = $request->description;
         $product->sku = $request->sku;
         $product->price = $request->price;
-        $product->quantity = $request->quantity;
         $product->category_id = $request->category_id;
         $product->supplier_id = $request->supplier_id;
 
