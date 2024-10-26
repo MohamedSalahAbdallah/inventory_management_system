@@ -22,7 +22,7 @@ class RoleController extends Controller
     {
         $request->validate(
             [
-                'name' => 'required|string|unique:roles,name',
+                'name' => 'required|in:admin,supervisor,cashier',
             ]
         );
 
@@ -45,11 +45,12 @@ class RoleController extends Controller
         $role = Role::findOrFail($id);
         $request->validate(
             [
-                'name' => 'required|string',
+                'name' => 'required|in:admin,supervisor,cashier',
+
             ]
         );
 
-        $role->update($request->all());
+        $role->update($request->name);
         return $role;
     }
 
