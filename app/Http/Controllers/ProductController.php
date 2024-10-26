@@ -50,6 +50,7 @@ class ProductController extends Controller
             'supplier_id' => $request->supplier_id,
             'image' => $imageName,
         ]);
+        $product = Product::with(['category', 'supplier', 'productWarehouse.WarehouseSection.warehouse'])->findOrFail($product->id);
         return $product;
     }
 
