@@ -65,7 +65,7 @@ class UserController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $user = User::findOrFail($id);
+        $user = User::with('role')->findOrFail($id);
         $updatedUser = [];
         if (isset($request->image)) {
             if ($request->hasFile('image')) {
@@ -92,19 +92,21 @@ class UserController extends Controller
                 return $user;
             }
         } else {
-
-            if (isset($request->current_password) && !Hash::check($request->current_password, $user->password)) {
-                return response([
-                    'error' => [
-                        'current_password' => 'Current password is invalid'
-                    ]
-                ], 401);
-            } elseif (!isset($request->current_password)) {
-                return response([
-                    'error' => [
-                        'current_password' => 'Current password is required'
-                    ]
-                ], 401);
+            if ($user->role->name != 'admin') {
+                # code...
+                if (isset($request->current_password) && !Hash::check($request->current_password, $user->password)) {
+                    return response([
+                        'error' => [
+                            'current_password' => 'Current password is invalid'
+                        ]
+                    ], 401);
+                } elseif (!isset($request->current_password)) {
+                    return response([
+                        'error' => [
+                            'current_password' => 'Current password is required'
+                        ]
+                    ], 401);
+                }
             }
 
             $updatedUser = [];
