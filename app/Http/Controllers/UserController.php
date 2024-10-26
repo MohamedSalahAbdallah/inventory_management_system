@@ -46,7 +46,7 @@ class UserController extends Controller
             "email" => $request->email,
             "password" => bcrypt($request->password),
             "role_id" => $request->role_id,
-            'image' => $imageName
+            "image" => isset($imageName) ? $imageName : null,
         ]);
 
         return User::with(['role'])->findOrFail($user->id);;
