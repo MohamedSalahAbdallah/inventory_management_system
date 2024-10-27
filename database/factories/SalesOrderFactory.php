@@ -21,7 +21,8 @@ class SalesOrderFactory extends Factory
         return [
             'user_id' => User::inRandomOrder()->value('id'),
             'total_amount' => $this->faker->randomFloat(2, 1, 1000),
-            'customer_id' => Customer::inRandomOrder()->value('id')
+            'customer_id' => Customer::inRandomOrder()->value('id'),
+            'created_at' => $this->faker->dateTimeBetween('-1 year', 'now'),
         ];
     }
 }

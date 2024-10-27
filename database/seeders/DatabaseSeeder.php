@@ -34,10 +34,10 @@ class DatabaseSeeder extends Seeder
         Supplier::factory(10)->create();
         Product::factory(100)->create();
         Customer::factory(10)->create();
-        SalesOrder::factory(20)->create();
-        PurchaseOrder::factory(200)->create();
+        SalesOrder::factory(2000)->create();
+        PurchaseOrder::factory(2000)->create();
         InventoryMovement::factory(25)->create();
-        ProductSalesOrder::factory(100)->create();
+        ProductSalesOrder::factory(4000)->create();
         Adjustment::factory(25)->create();
         Warehouse::factory(5)->create();
         WarehouseSection::factory(10)->create();
