@@ -63,7 +63,9 @@ class ChartsController extends Controller
             return $date->format('Y-m-d');
         })->unique()->values();
 
-        $total_amounts = $salesOrders->groupBy('created_at')->map(function ($group) {
+        $total_amounts = $salesOrders->groupBy(function ($order) {
+            return $order->created_at->format('Y-m-d');
+        })->map(function ($group) {
             return $group->sum('total_amount');
         })->values();
 
