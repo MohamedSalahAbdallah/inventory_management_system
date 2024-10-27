@@ -18,6 +18,8 @@ return new class extends Migration {
             $table->timestamps();
         });
         DB::insert('insert into roles (name, created_at, updated_at) values (?, ?, ?)', ['admin', now(), now()]);
+        DB::insert('insert into roles (name, created_at, updated_at) values (?, ?, ?)', ['supervisor', now(), now()]);
+        DB::insert('insert into roles (name, created_at, updated_at) values (?, ?, ?)', ['casher', now(), now()]);
     }
 
     /**
