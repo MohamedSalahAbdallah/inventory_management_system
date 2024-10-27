@@ -92,7 +92,7 @@ class UserController extends Controller
                 return $user;
             }
         } else {
-            if ($user->role->name != 'admin') {
+            if (auth('sanctum')->user()->role->name != 'admin') {
                 # code...
                 if (isset($request->current_password) && !Hash::check($request->current_password, $user->password)) {
                     return response([
@@ -110,7 +110,7 @@ class UserController extends Controller
             }
 
             $updatedUser = [];
-            if (isset($request->name) && $request->name != $user->name) {
+            if ($request->filled('name') && $request->name != $user->name) {
                 $request->validate([
                     "name" => 'required|string',
                 ]);
@@ -118,7 +118,7 @@ class UserController extends Controller
                 $updatedUser['name'] = $request->name;
             }
 
-            if (isset($request->email) && $request->email != $user->email) {
+            if ($request->filled('email') && $request->email != $user->email) {
                 $request->validate([
                     "email" => 'required|email|unique:users,email,' . $id,
                 ]);
@@ -126,7 +126,7 @@ class UserController extends Controller
                 $updatedUser['email'] = $request->email;
             }
 
-            if (isset($request->new_password)) {
+            if ($request->filled('new_password')) {
                 $request->validate([
                     "new_password" => 'required|min:8|confirmed',
                 ]);
@@ -134,7 +134,7 @@ class UserController extends Controller
                 $updatedUser['password'] = bcrypt($request->new_password);
             }
 
-            if (isset($request->role_id) && $request->role_id != $user->role_id) {
+            if ($request->filled('role_id') && $request->role_id != $user->role_id) {
                 $request->validate([
                     "role_id" => 'required|exists:roles,id'
                 ]);
@@ -142,7 +142,6 @@ class UserController extends Controller
                 $updatedUser['role_id'] = $request->role_id;
             }
         }
-
         if (count($updatedUser) > 0) {
             $user->update($updatedUser);
         }
