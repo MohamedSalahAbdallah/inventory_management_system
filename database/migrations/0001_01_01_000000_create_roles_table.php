@@ -13,13 +13,13 @@ return new class extends Migration {
     {
         Schema::create('roles', function (Blueprint $table) {
             $table->id();
-            $table->enum('name', allowed: ['admin', 'supervisor', 'casher'])->unique();
+            $table->enum('name', allowed: ['admin', 'supervisor', 'cashier'])->unique();
             $table->softDeletes();
             $table->timestamps();
         });
         DB::insert('insert into roles (name, created_at, updated_at) values (?, ?, ?)', ['admin', now(), now()]);
         DB::insert('insert into roles (name, created_at, updated_at) values (?, ?, ?)', ['supervisor', now(), now()]);
-        DB::insert('insert into roles (name, created_at, updated_at) values (?, ?, ?)', ['casher', now(), now()]);
+        DB::insert('insert into roles (name, created_at, updated_at) values (?, ?, ?)', ['cashier', now(), now()]);
     }
 
     /**
