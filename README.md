@@ -2,6 +2,8 @@
 
 This project is an Inventory Management System built with Laravel, designed to help businesses track their products, sales, and inventory efficiently.
 
+For the Frontend part, please visit this [repo](https://github.com/Ahmedd26/Inventive)
+
 ## Features
 
 -   Product management
